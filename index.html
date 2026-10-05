@@ -72,7 +72,8 @@ section[hidden]{display:none}
 .tagesmotto{margin:6px 0 14px;color:var(--leise);font-weight:600}
 .slot{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--linie)}
 .slot:first-of-type{border-top:0}
-.slot time{font-family:var(--display);font-size:20px;color:var(--titel)}
+.slot time{font-family:var(--display);font-size:20px;color:var(--titel);min-width:0;overflow-wrap:anywhere}
+.slot time.wort{font-size:14px;line-height:1.3;padding-top:3px}
 .slot h3{font-family:var(--body);font-weight:800;font-size:17px}
 .slot p{margin:2px 0 0;color:var(--leise);font-size:15px}
 .marke{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--akzent);color:var(--akzent-text);margin-left:6px;vertical-align:2px}
@@ -427,7 +428,7 @@ function zeichneProgramm(){
     return;
   }
   $('#tagesinhalt').innerHTML = kopf + p.slots.map(s => `
-    <div class="slot"><time>${esc(s.zeit)}</time>
+    <div class="slot"><time${/\d/.test(s.zeit) ? '' : ' class="wort"'}>${esc(s.zeit)}</time>
       <div><h3>${esc(s.titel)}${s.highlight ? '<span class="marke">Highlight</span>' : ''}</h3>
       <p>${esc(s.text)}${s.ort ? ' · ' + esc(s.ort) : ''}</p></div></div>`).join('');
 }
