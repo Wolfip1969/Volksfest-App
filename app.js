@@ -217,6 +217,25 @@ const ANFAHRT = [
   ["Barrierefrei", "Das Festgelände ist barrierefrei zugänglich, es gibt behindertengerechte Toiletten."]
 ];
 
+// SUCHE: Alltagswörter, die auf Begriffe in der App umgeleitet werden. Links das, was Besucher tippen, rechts was in der App steht.
+const SUCHWOERTER = {
+  "fundsache": "fundbüro", "fundsachen": "fundbüro", "verloren": "fundbüro", "vergessen": "fundbüro", "liegen lassen": "fundbüro", "geldbeutel": "fundbüro", "handy": "fundbüro", "schlüssel": "fundbüro",
+  "klo": "toilette", "wc": "toilette", "toilette": "toilette", "toiletten": "toilette",
+  "sanitäter": "erste hilfe", "verletzt": "erste hilfe", "arzt": "erste hilfe", "notfall": "erste hilfe", "brk": "erste hilfe", "pflaster": "erste hilfe",
+  "parken": "mit dem auto", "parkplatz": "mit dem auto", "parkgebühr": "mit dem auto",
+  "zug": "bahn", "bahnhof": "bahn", "brb": "bahn",
+  "rad": "fahrrad", "radl": "fahrrad",
+  "rollstuhl": "barrierefrei", "rollator": "barrierefrei",
+  "ec": "kartenzahlung", "karte zahlen": "kartenzahlung", "girocard": "kartenzahlung", "bargeld": "bezahlen", "zahlen": "bezahlen", "bon": "bierzeichen", "bons": "bierzeichen", "marken": "bierzeichen",
+  "tisch": "reservier", "platz reservieren": "reservier",
+  "geöffnet": "öffnungszeiten", "offen": "öffnungszeiten", "wann auf": "öffnungszeiten", "uhrzeit": "öffnungszeiten",
+  "ohne alkohol": "alkoholfrei", "autofahrer": "alkoholfrei", "softdrink": "alkoholfrei",
+  "kinder": "kids", "kind": "kids",
+  "musik": "musi", "band": "musi", "kapelle": "musi",
+  "vegetarisch": "vegan", "veggie": "vegan",
+  "adresse": "volksfestplatz", "anfahrt": "anfahrt", "navi": "route"
+};
+
 const INFOS = [
   { titel: "Bezahlen und Bierzeichen", punkte: [
     ["Bierzeichen", "Gibt es an der Volksfestkasse. Mindestabnahme: 10 Stück."],
@@ -369,3 +388,113 @@ if (TESTMODUS) $('#hinweis').hidden = false;
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   window.addEventListener('load', () => { try { navigator.serviceWorker.register('sw.js'); } catch (e) {} });
 }
+
+
+/* Suche */
+const norm = s => String(s).toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').replace(/[^a-z0-9: ]+/g, ' ').replace(/\s+/g, ' ').trim();
+const SUCHWORT_N = Object.fromEntries(Object.entries(SUCHWOERTER).map(([k, v]) => [norm(k), norm(v)]));
+
+function suchIndex(){
+  const idx = [];
+  const add = (titel, wo, text, ziel, stich = '') => idx.push({ titel, wo, text, ziel, t: norm(titel), h: norm([titel, wo, text, stich].join(' ')) });
+  for (let i = 0; i < FEST_TAGE; i++) {
+    const p = PROGRAMM[i]; if (!p) continue;
+    const d = tageAb(i), tag = `${wt[d.getDay()]}, ${d.getDate()}. Juli`;
+    p.slots.forEach((s, j) => add(s.titel, `Programm · ${tag} · ${s.zeit}`, [s.text, s.ort].filter(Boolean).join(' · '), { tab: 'programm', tag: i, n: j }, p.motto));
+  }
+  ORTE.forEach(o => add(o.name, `Lageplan · ${KATEGORIEN[o.kat].name}`, o.info === 'Platzhalter' ? '' : o.info, { tab: 'plan', ort: o.id }));
+  add(ADRESSE.join(', '), 'Lageplan · Anfahrt', 'Route planen', { tab: 'plan', el: '#adresse' }, 'adresse navi route');
+  ANFAHRT.forEach(([t, x], k) => add(t, 'Lageplan · Anfahrt', x, { tab: 'plan', el: `#anfahrt > .karte:nth-child(${k + 1})` }, 'anfahrt'));
+  [['#caterer', CATERER, 'Essen'], ['#bars', BARS, 'Bars und Getränke']].forEach(([box, liste, bereich]) =>
+    liste.forEach((c, k) => {
+      add(c.name, bereich, c.info || '', { tab: 'essen', karte: `${box} > details:nth-child(${k + 1})` });
+      let z = 0;
+      c.gruppen.forEach(g => g.items.forEach(([n, pr, , zus]) => add(n, `${bereich} · ${c.name}`, [zus, pr + ' €'].filter(Boolean).join(' · '),
+        { tab: 'essen', karte: `${box} > details:nth-child(${k + 1})`, zeile: z++ }, g.titel)));
+    }));
+  ZEITEN.forEach(([t, z], k) => add(`${t}: ${z}`, 'Infos · Öffnungszeiten', '', { tab: 'infos', el: `#zeiten tr:nth-child(${k + 1})` }, 'öffnungszeiten'));
+  const infoKarten = [...document.querySelectorAll('#infos > details')];
+  const titelZuKarte = t => infoKarten.findIndex(d => d.querySelector('h3').textContent === t);
+  if (RESERVIERUNG_URL) add('Tischreservierung', 'Infos', 'Tisch im Bierzelt online reservieren', { tab: 'infos', karte: `#infos > details:nth-child(${titelZuKarte('Tischreservierung') + 1})` }, 'reservieren');
+  INFOS.forEach(i => {
+    const sel = `#infos > details:nth-child(${titelZuKarte(i.titel) + 1})`;
+    if (i.punkte) i.punkte.forEach(([l, t], k) => add(l, `Infos · ${i.titel}`, t, { tab: 'infos', karte: sel, punkt: k }));
+    else add(i.titel, 'Infos', i.text, { tab: 'infos', karte: sel });
+  });
+  return idx;
+}
+
+function suche(q){
+  const woerter = norm(q).split(' ').filter(Boolean);
+  if (!woerter.length) return [];
+  // Ganze Eingabe als Ersatzwort (z. B. "liegen lassen"), sonst Wort für Wort
+  const ganz = SUCHWORT_N[woerter.join(' ')];
+  const gruppen = ganz ? [[woerter.join(' '), ganz]] : woerter.map(w => [w, SUCHWORT_N[w]].filter(Boolean));
+  // Kurze Wörter (unter 4 Zeichen, z. B. "ec") nur am Wortanfang, längere auch mitten im Wort ("bier" in "Weißbier")
+  const passt = (text, a) => a.length < 4 ? (' ' + text).includes(' ' + a) : text.includes(a);
+  return INDEX.map(e => {
+    let punkte = 0;
+    for (const alts of gruppen) {
+      const imTitel = alts.some(a => passt(e.t, a)), drin = imTitel || alts.some(a => passt(e.h, a));
+      if (!drin) return null;
+      punkte += imTitel ? (alts.some(a => e.t.startsWith(a)) ? 3 : 2) : 1;
+    }
+    return { e, punkte };
+  }).filter(Boolean).sort((x, y) => y.punkte - x.punkte).slice(0, 40).map(x => x.e);
+}
+
+let INDEX = [];
+const VORSCHLAEGE = ['Fundbüro', 'Feuerwerk', 'Erste Hilfe', 'Toiletten', 'Parken', 'Weißbier', 'Alkoholfrei', 'Kartenzahlung'];
+const sucheBox = $('#suche'), suchfeld = $('#suchfeld');
+let trefferJetzt = [];
+
+function zeigeTreffer(){
+  const q = suchfeld.value;
+  $('#vorschlaege').hidden = !!q.trim();
+  trefferJetzt = suche(q);
+  $('#treffer').innerHTML = !q.trim() ? '' : trefferJetzt.length
+    ? trefferJetzt.map((e, i) => `<li><button data-i="${i}"><span class="wo">${esc(e.wo)}</span><b>${esc(e.titel)}</b>${e.text ? `<small>${esc(e.text)}</small>` : ''}</button></li>`).join('')
+    : `<li class="nix">Nichts gefunden. Versuch es mit einem anderen Wort.</li>`;
+}
+
+function sucheAuf(){
+  INDEX = suchIndex();
+  sucheBox.hidden = false;
+  document.body.style.overflow = 'hidden';
+  history.pushState({ suche: 1 }, '');
+  suchfeld.focus();
+  zeigeTreffer();
+}
+function sucheSchliessen(){ sucheBox.hidden = true; document.body.style.overflow = ''; }
+function sucheZu(){ const zurueck = history.state && history.state.suche; sucheSchliessen(); if (zurueck) history.back(); }
+
+function springe(z){
+  document.querySelector(`nav [data-tab="${z.tab}"]`).click();
+  let el;
+  if (z.tab === 'programm') { aktTag = z.tag; zeichneTage(); zeichneProgramm(); el = document.querySelectorAll('#tagesinhalt .slot')[z.n]; }
+  else if (z.ort) { filter = 'alle'; gewaehlt = null; waehle(z.ort); el = document.querySelector(`#planliste .eintrag[data-id="${z.ort}"]`); }
+  else if (z.karte) {
+    const d = document.querySelector(z.karte); d.open = true;
+    el = z.zeile != null ? d.querySelectorAll('.zeile')[z.zeile] : z.punkt != null ? d.querySelectorAll('.punkt')[z.punkt] : d;
+  }
+  else el = document.querySelector(z.el);
+  if (!el) return;
+  el.scrollIntoView({ block: 'center' });
+  el.classList.remove('aufblitzen'); void el.offsetWidth; el.classList.add('aufblitzen');
+}
+
+try { history.scrollRestoration = 'manual'; } catch (e) {}
+$('#suche-auf').addEventListener('click', sucheAuf);
+$('#suche-zu').addEventListener('click', sucheZu);
+suchfeld.addEventListener('input', zeigeTreffer);
+suchfeld.addEventListener('keydown', e => { if (e.key === 'Enter') { suchfeld.blur(); } });
+sucheBox.addEventListener('keydown', e => { if (e.key === 'Escape') sucheZu(); });
+window.addEventListener('popstate', () => { if (!sucheBox.hidden) sucheSchliessen(); });
+$('#vorschlaege').innerHTML = VORSCHLAEGE.map(v => `<button class="chip">${esc(v)}</button>`).join('');
+$('#vorschlaege').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { suchfeld.value = b.textContent; zeigeTreffer(); } });
+$('#treffer').addEventListener('click', e => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  const z = trefferJetzt[+b.dataset.i].ziel;
+  sucheZu();
+  setTimeout(() => springe(z), 50);
+});

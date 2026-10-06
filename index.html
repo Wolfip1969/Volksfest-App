@@ -157,6 +157,28 @@ details.info.karte{padding:0}
 
 
 
+/* Suche */
+.kopf-rechts{display:flex;gap:18px;align-items:center}
+.suche-knopf{background:none;border:0;padding:0;color:#fff;line-height:0}
+.suche-knopf svg{width:32px;height:32px}
+.suche{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;flex-direction:column;padding:12px 16px 0;padding-top:max(12px,env(safe-area-inset-top))}
+.suche[hidden]{display:none}
+.suchkopf{display:flex;gap:10px;align-items:center;max-width:720px;width:100%;margin:0 auto}
+.suchkopf input{flex:1;min-width:0;font:inherit;font-size:18px;padding:12px 14px;border-radius:12px;border:2px solid var(--linie);background:var(--karte);color:var(--text)}
+.suchkopf input:focus{outline:none;border-color:var(--blau)}
+.suche-zu{background:none;border:0;font-weight:700;color:var(--titel);padding:8px 4px}
+.vorschlaege{display:flex;gap:8px;flex-wrap:wrap;margin:14px auto 0;max-width:720px;width:100%}
+.vorschlaege[hidden]{display:none}
+.treffer-liste{list-style:none;margin:8px auto 0;padding:0 0 24px;max-width:720px;width:100%;overflow-y:auto;flex:1}
+.treffer-liste button{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--linie);padding:12px 2px}
+.treffer-liste li:first-child button{border-top:0}
+.treffer-liste b{display:block;font-size:16px}
+.treffer-liste .wo{font-size:13px;font-weight:700;color:var(--titel);text-transform:uppercase;letter-spacing:.02em}
+.treffer-liste small{display:block;color:var(--leise);font-size:14px;margin-top:2px}
+.treffer-liste .nix{color:var(--leise);padding:16px 2px}
+@keyframes aufblitzen{0%,40%{background:color-mix(in srgb,var(--blau) 22%,transparent)}100%{background:transparent}}
+.aufblitzen{animation:aufblitzen 2.4s ease-out;border-radius:8px}
+
 /* Tabs */
 nav{position:fixed;left:0;right:0;bottom:0;background:var(--karte);border-top:1px solid var(--linie);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom,0px);z-index:10}
 nav button{background:none;border:0;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:700;color:var(--leise)}
@@ -168,7 +190,7 @@ nav button[aria-selected="true"]{color:var(--titel)}
 <body>
 
 <header class="kopf">
-  <div class="kopfzeile"><div class="logo"><img src="icons/svb-logo.png" alt="Wappen SV Bruckmühl, gegründet 1911"></div><div class="social" id="social"></div></div>
+  <div class="kopfzeile"><div class="logo"><img src="icons/svb-logo.png" alt="Wappen SV Bruckmühl, gegründet 1911"></div><div class="kopf-rechts"><div class="social" id="social"></div><button class="suche-knopf" id="suche-auf" aria-label="Suchen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button></div></div>
   <h1>Volksfest<br>Bruckmühl</h1>
   <div class="verein">SV Bruckmühl &amp; Maxlrainer</div>
   <div class="datum">9. bis 18. Juli 2027</div>
@@ -180,6 +202,15 @@ nav button[aria-selected="true"]{color:var(--titel)}
 
 <div class="hinweis" id="hinweis" hidden>Testversion: Programm und Speisekarte stammen vom Vorjahr, alles andere sind Platzhalter.</div>
 
+
+<div class="suche" id="suche" role="dialog" aria-modal="true" aria-label="Suche" hidden>
+  <div class="suchkopf">
+    <input type="search" id="suchfeld" placeholder="Suchen, z. B. Fundbüro, Feuerwerk, Weißbier" autocomplete="off" enterkeyhint="search" aria-label="Suchbegriff">
+    <button class="suche-zu" id="suche-zu">Fertig</button>
+  </div>
+  <div class="vorschlaege" id="vorschlaege"></div>
+  <ul class="treffer-liste" id="treffer" aria-live="polite"></ul>
+</div>
 
 <main>
   <section id="tab-programm" role="tabpanel">
