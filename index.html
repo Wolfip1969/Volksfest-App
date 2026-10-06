@@ -82,6 +82,15 @@ section[hidden]{display:none}
 /* Plan */
 .planbox{background:var(--karte);border:1px solid var(--linie);border-radius:16px;padding:10px}
 .planbox svg{width:100%;height:auto;display:block}
+.anfahrtkarte{margin:0;background:var(--karte);border:1px solid var(--linie);border-radius:16px;overflow:hidden}
+.kartenbild{position:relative}
+.kartenbild img{display:block;width:100%;height:auto}
+.kartenpin{position:absolute;left:50%;top:50%;width:28px;height:37px;transform:translate(-50%,-100%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.anfahrtkarte figcaption{font-size:12px;color:var(--leise);padding:6px 12px}
+.anfahrtkarte figcaption a{color:inherit}
+.adresse{margin:12px 0}
+.adresse p{margin:0}
+.adresse b{display:block;font-size:17px}
 .zone{cursor:pointer}
 .zone rect,.zone path,.zone circle{transition:opacity .15s}
 .pin{cursor:pointer}
@@ -186,6 +195,17 @@ nav button[aria-selected="true"]{color:var(--titel)}
     </div>
     <div class="filter" id="planfilter" role="group" aria-label="Filter"></div>
     <ul class="liste" id="planliste"></ul>
+
+    <h2 class="titel">Anfahrt</h2>
+    <figure class="anfahrtkarte">
+      <div class="kartenbild">
+        <img src="icons/karte-anfahrt.jpg" width="1000" height="640" alt="Karte von Bruckmühl mit dem Volksfestplatz am Rathausplatz und dem Bahnhof Bruckmühl">
+        <svg class="kartenpin" viewBox="0 0 24 32" aria-hidden="true"><path d="M12 0C5.4 0 0 5.3 0 11.9 0 20.8 12 32 12 32s12-11.2 12-20.1C24 5.3 18.6 0 12 0z" fill="#d2332e"/><circle cx="12" cy="12" r="4.5" fill="#fff"/></svg>
+      </div>
+      <figcaption>Karte: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap-Mitwirkende</a></figcaption>
+    </figure>
+    <div class="adresse karte" id="adresse"></div>
+    <div class="raster" id="anfahrt"></div>
   </section>
 
   <section id="tab-essen" role="tabpanel" hidden>

@@ -207,13 +207,17 @@ const ZEITEN = [
   ["Sonntag", "ab 11:00"]
 ]; // Platzhalter
 
+// ANFAHRT: Texte von svbruckmuehl.de/volksfest/#anfahrt
+const ADRESSE = ["Volksfestplatz", "Rathausplatz", "83052 Bruckmühl"];
+const ROUTE_URL = "https://www.google.com/maps/dir/?api=1&destination=47.88388,11.92074";
+const ANFAHRT = [
+  ["Mit der Bahn", "Mit der Bayerischen Regiobahn (BRB) kommst du bequem zum Bahnhof Bruckmühl. Von München, Holzkirchen und Rosenheim gibt es regelmäßige Verbindungen. Vom Bahnhof sind es nur wenige Gehminuten zum Festgelände."],
+  ["Mit dem Auto", "Das Festgelände ist gut ausgeschildert. Rund um den Volksfestplatz gibt es Parkplätze. An den Haupttagen kostet das Parken eine kleine Gebühr, der Erlös geht an die Sparte Fußball des SV Bruckmühl."],
+  ["Mit dem Fahrrad", "Fahrradstellplätze gibt es direkt am Festgelände."],
+  ["Barrierefrei", "Das Festgelände ist barrierefrei zugänglich, es gibt behindertengerechte Toiletten."]
+];
+
 const INFOS = [
-  { titel: "Anfahrt", punkte: [
-    ["Adresse", "Volksfestplatz, Rathausplatz, 83052 Bruckmühl"],
-    ["Bahn", "Mit der BRB bis Bahnhof Bruckmühl, von dort wenige Gehminuten. Aktuelle Abfahrtszeiten findest du in der Fahrplanauskunft von BRB oder Deutscher Bahn."],
-    ["Auto", "Rund um den Festplatz gibt es Parkplätze. An den Haupttagen kostet das Parken eine kleine Gebühr, sie kommt der Sparte Fußball des SV Bruckmühl zugute."],
-    ["Fahrrad", "Stellplätze gibt es direkt am Festgelände."],
-    ["Barrierefrei", "Das Gelände ist barrierefrei, es gibt behindertengerechte Toiletten."] ]},
   { titel: "Bezahlen und Bierzeichen", punkte: [
     ["Bierzeichen", "Gibt es an der Volksfestkasse. Mindestabnahme: 10 Stück."],
     ["Kartenzahlung", "Bierzeichen kannst du am Kassenhäuschen im Festzelt mit Karte bezahlen. Es steht seitlich rechts hinter der Bühne."] ]},
@@ -330,6 +334,10 @@ $('#caterer').innerHTML = CATERER.map((c, i) => karte(c, i === 0)).join('');
 $('#bars-intro').textContent = BARS_INTRO;
 $('#bars').innerHTML = BARS.map((b, i) => karte(b, i === 0)).join('');
 $('#legende').innerHTML = LEGENDE.map(t => `<p>${esc(t)}</p>`).join('');
+
+/* Anfahrt */
+$('#adresse').innerHTML = `<p><b>${esc(ADRESSE[0])}</b>${ADRESSE.slice(1).map(esc).join(', ')}</p><a class="knopf" href="${esc(ROUTE_URL)}" target="_blank" rel="noopener">Route planen</a>`;
+$('#anfahrt').innerHTML = ANFAHRT.map(([t, x]) => `<div class="karte"><h3>${esc(t)}</h3><p>${esc(x)}</p></div>`).join('');
 
 /* Infos */
 $('#zeiten').innerHTML = ZEITEN.map(([t, z]) => `<tr><td>${esc(t)}</td><td>${esc(z)}</td></tr>`).join('');
