@@ -133,6 +133,67 @@ const CATERER = [
   ]}
 ];
 
+// BARS: Betreiber laut Berichten auf svbruckmuehl.de. Preise sind BEISPIELE, nur die Maß (12,60 €, Stand 2026) ist echt.
+const BARS_INTRO = "Neben dem Festzelt betreiben die Sparten des SV Bruckmühl fünf Bars, dazu kommt die Kaffeebar. Die Getränkeliste ist noch ein Beispiel, die echten Preise für 2027 folgen.";
+const BARS = [
+  { name: "Ausschank im Festzelt", info: "Maxlrainer Festbier, frisch vom Fass", gruppen: [{ items: [
+      ["Maß Festbier", "12,60", "", "Preis 2026"],
+      ["Maß Radler", "12,60"],
+      ["Maß alkoholfreies Bier", "12,60"],
+      ["Maß Spezi", "9,50"],
+      ["Maß Wasser", "6,00"] ]}] },
+
+  { name: "Pils- und Weißbier-Bar", info: "SVB-Handballer · ab dem Abend", gruppen: [{ items: [
+      ["Weißbier", "6,50", "", "0,5 l"],
+      ["Alkoholfreies Weißbier", "6,50", "", "0,5 l"],
+      ["Russ'n", "6,50", "", "Weißbier mit Zitronenlimo, 0,5 l"],
+      ["Pils", "5,00", "", "0,33 l"] ]}] },
+
+  { name: "Weinbar", info: "Ab dem Abend", gruppen: [
+    { items: [
+      ["Weißwein", "6,50", "", "0,2 l"],
+      ["Rotwein", "6,50", "", "0,2 l"],
+      ["Rosé", "6,50", "", "0,2 l"],
+      ["Weinschorle", "7,00", "", "0,5 l"] ]},
+    { titel: "Sekt und Spritz", items: [
+      ["Glas Sekt", "5,50", "", "0,1 l"],
+      ["Hugo", "8,50"],
+      ["Aperol Spritz", "8,50"],
+      ["Flasche Sekt", "29,00", "", "0,75 l"] ]}
+  ]},
+
+  { name: "Schnapsbar", info: "Ab dem Abend · je 2 cl", gruppen: [{ items: [
+      ["Obstler", "3,50"],
+      ["Williamsbirne", "4,00"],
+      ["Enzian", "4,00"],
+      ["Kräuterlikör", "3,50"],
+      ["Haselnuss", "3,50"] ]}] },
+
+  { name: "Cocktailbar", info: "Ab dem Abend", gruppen: [
+    { items: [
+      ["Caipirinha", "10,00"],
+      ["Mojito", "10,00"],
+      ["Gin Tonic", "10,00"],
+      ["Cuba Libre", "9,00"],
+      ["Wodka Energy", "9,00"] ]},
+    { titel: "Ohne Alkohol", items: [
+      ["Virgin Mojito", "7,00"],
+      ["Ipanema", "7,00", "", "Limette, Rohrzucker, Ginger Ale"] ]}
+  ]},
+
+  { name: "Alkoholfreie Bar", info: "SVB-Stockschützen · für Autofahrer und alle anderen", gruppen: [{ items: [
+      ["Spezi", "4,00", "", "0,5 l"],
+      ["Limo", "4,00", "", "0,5 l"],
+      ["Apfelschorle", "4,00", "", "0,5 l"],
+      ["Mineralwasser", "3,50", "", "0,5 l"],
+      ["Energydrink", "4,50", "", "0,25 l"] ]}] },
+
+  { name: "Kaffeebar", info: "SVB-Leichtathleten · nachmittags", gruppen: [{ items: [
+      ["Tasse Kaffee", "3,00"],
+      ["Cappuccino", "3,80"],
+      ["Stück Kuchen", "3,50", "", "Selbstgebacken"] ]}] }
+];
+
 const LEGENDE = [
   "Allergene: a) glutenhaltiges Getreide b) Hühnerei c) Milch (Laktose) d) Sellerie e) Senf f) Fisch g) Krebstiere h) Schalenfrüchte i) Erdnuss j) Sesam k) Soja l) Schwefeldioxid/Sulfite m) Lupinen n) Weichtiere",
   "Zusatzstoffe bei Sigl: 1) Farbstoff 2) Konservierungsstoff 3) Antioxidationsmittel 4) Geschmacksverstärker 5) geschwefelt 6) geschwärzt 7) Phosphat 8) Süßungsmittel"
@@ -257,14 +318,17 @@ $('#plan').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key ===
 $('#planliste').addEventListener('click', e => { const b = e.target.closest('.eintrag'); if (b) waehle(+b.dataset.id); });
 $('#planfilter').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { filter = b.dataset.k; gewaehlt = null; zeichnePlan(); } });
 
-/* Caterer */
-$('#caterer').innerHTML = CATERER.map((c, i) => `
-  <details class="karte" ${i === 0 ? 'open' : ''}><summary><h3>${esc(c.name)}</h3></summary>
-  <div class="menue">${c.gruppen.map(g => `<div class="gruppe">
+/* Caterer und Bars */
+const karte = (c, offen) => `
+  <details class="karte" ${offen ? 'open' : ''}><summary><h3>${esc(c.name)}</h3></summary>
+  <div class="menue">${c.info ? `<p class="sub">${esc(c.info)}</p>` : ''}${c.gruppen.map(g => `<div class="gruppe">
     ${g.titel ? `<h4>${esc(g.titel)}</h4>` : ''}${g.sub ? `<p class="sub">${esc(g.sub)}</p>` : ''}
     ${g.items.map(([n, p, a, z]) => `<div class="zeile"><div class="n">${esc(n)}${a ? ` <sup>${esc(a)}</sup>` : ''}${z ? `<small>${esc(z)}</small>` : ''}</div><div class="p">${esc(p)} €</div></div>`).join('')}
   </div>`).join('')}
-  ${c.fuss ? `<p class="fuss">${esc(c.fuss)}</p>` : ''}</div></details>`).join('');
+  ${c.fuss ? `<p class="fuss">${esc(c.fuss)}</p>` : ''}</div></details>`;
+$('#caterer').innerHTML = CATERER.map((c, i) => karte(c, i === 0)).join('');
+$('#bars-intro').textContent = BARS_INTRO;
+$('#bars').innerHTML = BARS.map((b, i) => karte(b, i === 0)).join('');
 $('#legende').innerHTML = LEGENDE.map(t => `<p>${esc(t)}</p>`).join('');
 
 /* Infos */
