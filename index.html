@@ -50,6 +50,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .social a{color:#fff;display:block;line-height:0}
 .social svg{width:32px;height:32px}
 .logo img{height:64px;width:auto;display:block}
+.logos{display:flex;gap:8px;align-items:center}
+@media (max-width:400px){.logo img{height:52px}.logo{padding:6px 8px 5px}.social,.kopf-rechts{gap:12px}.social svg,.suche-knopf svg{width:28px;height:28px}}
 .veranstalter{display:flex;gap:14px;align-items:center}
 .veranstalter a{color:var(--titel);font-weight:700}
 .veranstalter img{height:56px;width:auto;flex:none}
@@ -204,7 +206,7 @@ nav button[aria-selected="true"]{color:var(--titel)}
 <body>
 
 <header class="kopf">
-  <div class="kopfzeile"><div class="logo"><img src="icons/svb-logo.png" alt="Wappen SV Bruckmühl, gegründet 1911"></div><div class="kopf-rechts"><div class="social" id="social"></div><button class="suche-knopf" id="suche-auf" aria-label="Suchen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button></div></div>
+  <div class="kopfzeile"><div class="logos"><div class="logo"><img src="icons/svb-logo.png" alt="Wappen SV Bruckmühl, gegründet 1911"></div><div class="logo"><img src="icons/maxlrainer-logo.png" alt="Logo Maxlrainer Edle Biere, Schlossbrauerei Maxlrain"></div></div><div class="kopf-rechts"><div class="social" id="social"></div><button class="suche-knopf" id="suche-auf" aria-label="Suchen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button></div></div>
   <h1>Volksfest<br>Bruckmühl</h1>
   <div class="verein">SV Bruckmühl &amp; Maxlrainer</div>
   <div class="datum">9. bis 18. Juli 2027</div>
