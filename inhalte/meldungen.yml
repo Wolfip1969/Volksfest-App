@@ -3,7 +3,7 @@
 #
 # KEINE Meldung:  unten nur  []  stehen lassen.
 # EINE Meldung:   das  []  löschen und stattdessen schreiben (mit Bindestrich und "text:"):
-#
+# 
 #   - text: Festzelt voll, im Biergarten gibt es noch Plätze.
 #
 # Mehrere Meldungen: jede in eine eigene Zeile mit "- text:".
@@ -13,4 +13,4 @@
 #     ab: "2027-07-10 18:00"       # erst ab dann sichtbar
 # Enthält der Text einen Doppelpunkt, den Text in Anführungszeichen setzen: - text: "Achtung: Zelt voll"
 
-- text: Im Moment gibt es noch freie Tische! Kommts vorbei!!!
+- text: Im Moment gibt es noch freie Tische!!!
