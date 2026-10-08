@@ -1,0 +1,63 @@
+# ERSATZWÖRTER FÜR DIE SUCHE
+# Links, was Besucher tippen, rechts, was in der App steht.
+# Beispiel:   klo: toilette   ->   "Klo" findet alles mit "Toilette"
+
+fundsache: fundbüro
+fundsachen: fundbüro
+verloren: fundbüro
+vergessen: fundbüro
+liegen lassen: fundbüro
+geldbeutel: fundbüro
+handy: fundbüro
+schlüssel: fundbüro
+klo: toilette
+wc: toilette
+toilette: toilette
+toiletten: toilette
+sanitäter: erste hilfe
+verletzt: erste hilfe
+arzt: erste hilfe
+notfall: erste hilfe
+brk: erste hilfe
+pflaster: erste hilfe
+parken: mit dem auto
+parkplatz: mit dem auto
+parkgebühr: mit dem auto
+zug: bahn
+bahnhof: bahn
+brb: bahn
+rad: fahrrad
+radl: fahrrad
+rollstuhl: barrierefrei
+rollator: barrierefrei
+ec: kartenzahlung
+karte zahlen: kartenzahlung
+girocard: kartenzahlung
+bargeld: bezahlen
+zahlen: bezahlen
+bon: bierzeichen
+bons: bierzeichen
+marken: bierzeichen
+tisch: reservier
+platz reservieren: reservier
+geöffnet: öffnungszeiten
+offen: öffnungszeiten
+wann auf: öffnungszeiten
+uhrzeit: öffnungszeiten
+ohne alkohol: alkoholfrei
+autofahrer: alkoholfrei
+softdrink: alkoholfrei
+kinder: kids
+kind: kids
+musik: musi
+band: musi
+kapelle: musi
+vegetarisch: vegan
+veggie: vegan
+metzger: sigl
+metzgerei: sigl
+hendl: hendl
+haxn: haxn
+adresse: volksfestplatz
+anfahrt: anfahrt
+navi: route

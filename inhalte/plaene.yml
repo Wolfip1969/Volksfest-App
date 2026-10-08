@@ -1,0 +1,311 @@
+# LAGEPLAN UND ZELTPLAN
+# Namen und Infos kannst du hier frei ändern.
+# "flaeche" und "punkt" sind die Positionen im Plan. Die bitte nur ändern, wenn du weißt, was du tust.
+#
+# art im Festplatz: zelt, fahr (Fahrgeschäft), essen, buden, eingang, wc
+# art im Festzelt:  eingang, bar, essen, wc, mehr (Bühne und Service)
+
+festplatz:
+  - nr: 1
+    art: zelt
+    name: Festzelt
+    info: Haupteingang zum Biergarten hin
+    flaeche:
+      - 20
+      - 22
+      - 260
+      - 56
+  - nr: 2
+    art: zelt
+    name: Biergarten
+    info: Vor dem Haupteingang, zwischen den beiden Gassen
+    flaeche:
+      - 102
+      - 100
+      - 96
+      - 110
+  - nr: 3
+    art: fahr
+    name: Autoscooter
+    info: Mitte, unter dem Biergarten
+    flaeche:
+      - 102
+      - 216
+      - 96
+      - 110
+  - nr: 4
+    art: fahr
+    name: Kinderkarussell
+    info: Mitte, unter dem Autoscooter
+    flaeche:
+      - 102
+      - 332
+      - 96
+      - 108
+  - nr: 5
+    art: eingang
+    name: Eingang links
+    info: Vom Rathausplatz, Gasse direkt zum Haupteingang
+    flaeche:
+      - 74
+      - 446
+      - 24
+      - 12
+  - nr: 6
+    art: eingang
+    name: Eingang rechts
+    info: Vom Rathausplatz, am Break Dance vorbei
+    flaeche:
+      - 202
+      - 446
+      - 24
+      - 12
+  - nr: 7
+    art: buden
+    name: Losbude Rotes Kreuz
+    info: Linke Gasse, gleich am Eingang
+    flaeche:
+      - 20
+      - 376
+      - 50
+      - 64
+  - nr: 8
+    art: fahr
+    name: Kettenkarussell
+    info: Linke Gasse, links
+    flaeche:
+      - 20
+      - 304
+      - 50
+      - 66
+  - nr: 9
+    art: buden
+    name: Bude
+    info: Linke Gasse, links
+    flaeche:
+      - 20
+      - 238
+      - 50
+      - 60
+  - nr: 10
+    art: buden
+    name: Bude
+    info: Linke Gasse, links
+    flaeche:
+      - 20
+      - 172
+      - 50
+      - 60
+  - nr: 11
+    art: buden
+    name: Torwand
+    info: Linke Gasse, links, kurz vor dem Zelt
+    flaeche:
+      - 20
+      - 100
+      - 50
+      - 66
+  - nr: 12
+    art: essen
+    name: Streini's Fischspezialitäten
+    info: Steckerlfisch · rechte Gasse, gleich beim Zelt
+    flaeche:
+      - 230
+      - 100
+      - 50
+      - 70
+  - nr: 13
+    art: buden
+    name: Buden
+    info: Rechte Gasse, rechts
+    flaeche:
+      - 230
+      - 176
+      - 50
+      - 124
+  - nr: 14
+    art: fahr
+    name: Break Dance
+    info: Rechte Gasse, rechts am Ausgang
+    flaeche:
+      - 230
+      - 306
+      - 50
+      - 134
+  - nr: 15
+    art: wc
+    name: Toiletten
+    info: Hinter dem Festzelt rechts, Zugang über den Ausgang Toilette im Zelt
+    flaeche:
+      - 238
+      - 4
+      - 42
+      - 14
+
+festzelt:
+  - nr: 1
+    art: eingang
+    name: Haupteingang
+    info: Gegenüber der Bühne
+    punkt:
+      - 803
+      - 1258
+  - nr: 2
+    art: eingang
+    name: Eingang Nord-West
+    info: Hinten links, zwischen Hainz Peter und Sigl
+    punkt:
+      - 553
+      - 493
+  - nr: 3
+    art: eingang
+    name: Eingang Nord-Ost
+    info: Hinten rechts, neben der Schnaps- und Cocktailbar
+    punkt:
+      - 1320
+      - 493
+  - nr: 4
+    art: bar
+    name: Pils- und Weißbier-Bar
+    info: SVB-Handballer · rechte Zeltseite, nahe Haupteingang
+    flaeche:
+      - 1632
+      - 1007
+      - 128
+      - 250
+  - nr: 5
+    art: bar
+    name: Weinbar
+    info: Rechte Zeltseite, auf Höhe der Bühne
+    flaeche:
+      - 1635
+      - 627
+      - 127
+      - 257
+  - nr: 6
+    art: bar
+    name: Kaffeebar
+    info: SVB-Leichtathleten · hinten rechts
+    flaeche:
+      - 1473
+      - 493
+      - 162
+      - 78
+  - nr: 7
+    art: bar
+    name: Alkoholfreie Bar
+    info: SVB-Stockschützen · hinter der Bühne, rechts neben der Kasse
+    flaeche:
+      - 1128
+      - 493
+      - 127
+      - 85
+  - nr: 8
+    art: bar
+    name: Schnaps- und Cocktailbar
+    info: Außen am Eingang Nord-Ost
+    flaeche:
+      - 1383
+      - 433
+      - 128
+      - 60
+  - nr: 9
+    art: essen
+    name: SVB Volleyballer-Brotzeiten
+    info: Brezn, Käse, Radi, Obazda · hinten links
+    flaeche:
+      - 233
+      - 493
+      - 128
+      - 80
+  - nr: 10
+    art: essen
+    name: Hainz Peter
+    info: Hendl und Haxn · hinten links
+    flaeche:
+      - 361
+      - 493
+      - 127
+      - 80
+  - nr: 11
+    art: essen
+    name: Catering mit Sigl
+    info: Warme Gerichte, Brotzeit · hinter der Bühne, links
+    flaeche:
+      - 616
+      - 493
+      - 122
+      - 80
+  - nr: 12
+    art: wc
+    name: Toiletten
+    info: Außerhalb des Zelts, über den Ausgang Toilette
+    flaeche:
+      - 1600
+      - 240
+      - 210
+      - 110
+  - nr: 13
+    art: wc
+    name: Ausgang Toilette
+    info: Rechte Zeltseite hinten, durch den Raucherbereich
+    punkt:
+      - 1762
+      - 560
+  - nr: 14
+    art: mehr
+    name: Bühne
+    info: Mit Kränzen und SVB-Fahnen
+    flaeche:
+      - 776
+      - 677
+      - 229
+      - 130
+  - nr: 15
+    art: mehr
+    name: Kasse
+    info: Bierzeichen, Kartenzahlung, Fundbüro · hinter der Bühne
+    flaeche:
+      - 997
+      - 500
+      - 127
+      - 95
+  - nr: 16
+    art: mehr
+    name: Raucherbereich
+    info: Außen entlang der rechten Zeltseite
+    flaeche:
+      - 1762
+      - 360
+      - 128
+      - 898
+  - nr: 17
+    art: eingang
+    name: Notausgang West
+    info: Nur im Notfall · linke Zeltseite
+    punkt:
+      - 103
+      - 915
+  - nr: 18
+    art: eingang
+    name: Notausgang Ost
+    info: Nur im Notfall · rechte Zeltseite
+    punkt:
+      - 1762
+      - 943
+  - nr: 19
+    art: eingang
+    name: Notausgang Süd
+    info: Nur im Notfall · vorne rechts
+    punkt:
+      - 1420
+      - 1258
+  - nr: 20
+    art: essen
+    name: Streini's Fischspezialitäten
+    info: Steckerlfisch, Backfisch · außerhalb des Zelts, vorne rechts vom Haupteingang
+    flaeche:
+      - 1230
+      - 1285
+      - 140
+      - 70

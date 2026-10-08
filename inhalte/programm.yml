@@ -1,0 +1,195 @@
+# PROGRAMM
+# Ein Block pro Festtag, das Datum als "JJJJ-MM-TT" in Anführungszeichen.
+# Jeder Programmpunkt beginnt mit "- zeit:". Die Einrückung (Leerzeichen am Zeilenanfang) muss stimmen.
+#
+#   zeit:      Uhrzeit wie 18:00, oder ein Wort wie Abends / Danach
+#   ca:        nur bei Wörtern: ungefähre Uhrzeit, z. B. 22:00 (für "Läuft gerade / Als Nächstes")
+#   bis:       optional: Ende, z. B. 22:20
+#   titel:     Pflicht
+#   text, ort: optional
+#   highlight: true markiert den Punkt als Highlight
+
+"2027-07-09":
+  motto: Festeinzug
+  punkte:
+    - zeit: 18:00
+      titel: Großer Festeinzug
+      text: Mit der Dreder Musi, Blaskapelle Bruckmühl und der Jugendkapelle Vagen
+      ort: Festplatz
+      highlight: true
+    - zeit: Danach
+      titel: Festabend
+      text: Mit der Dreder Musi
+      ort: Festzelt
+
+"2027-07-10":
+  motto: Volleyball und Stimmung
+  punkte:
+    - zeit: 10:00
+      titel: 39. Volleyball-Volksfestturnier
+      text: Auf der Volksfestwiese
+      ort: Volksfestwiese
+    - zeit: 16:00
+      titel: Festzeltbetrieb und Bierausschank
+      ort: Festzelt
+    - zeit: 18:00
+      titel: Stimmung mit der Dreder Musi
+      ort: Festzelt
+
+"2027-07-11":
+  motto: Frühschoppen und Konzert
+  punkte:
+    - zeit: 10:00
+      titel: Volleyball-Volksfestturnier
+      text: 2. Tag
+      ort: Volksfestwiese
+    - zeit: 10:30
+      titel: Peter Hainz Gedächtnis-Schafkopfturnier
+      text: Bis 12:30 Uhr, Anmeldung ab 10:00 Uhr
+    - zeit: 10:30
+      titel: Frühschoppen und Mittagessen
+      text: Zu verbilligten Preisen, mit der Mangfalltaler Musi
+      ort: Festzelt
+    - zeit: 12:00
+      titel: Kaffee und Kuchen
+      text: An der Kaffeebar
+      ort: Festzelt
+    - zeit: 15:00
+      titel: Zelt schließt
+      text: Einlass ab 17:00 Uhr, nur mit Ticket
+      ort: Festzelt
+    - zeit: 19:00
+      titel: "Konzert: HEINO & Almklausi"
+      text: Präsentiert vom Stadtmarketing, Tickets bei muenchenticket.de
+      ort: Festzelt
+      highlight: true
+
+"2027-07-12":
+  motto: Traditionsabend mit Kesselfleischessen
+  punkte:
+    - zeit: 17:00
+      titel: Festzeltbetrieb und Bierausschank
+      ort: Festzelt
+    - zeit: 18:00
+      titel: Stimmung und Gemütlichkeit
+      text: Mit der Musikkapelle Vagen
+      ort: Festzelt
+    - zeit: 18:00
+      titel: Fußballerstammtisch
+      text: Mit Mannschaftsschießen an der Torwand
+      ort: Festzelt
+    - zeit: 19:00
+      titel: D'Wendelstoana Schnoiza
+      text: Und gemeinsamer Amboss-Polka-Plattler
+      ort: Festzelt
+      highlight: true
+
+"2027-07-13":
+  motto: Brillantfeuerwerk
+  punkte:
+    - zeit: 17:00
+      titel: Festzeltbetrieb und Bierausschank
+      ort: Festzelt
+    - zeit: 19:00
+      titel: Festabend mit der Harthauser Musi
+      ort: Festzelt
+    - zeit: Abends
+      ca: 22:00
+      bis: 22:20
+      titel: Großes Brillantfeuerwerk
+      text: Nach Einbruch der Dunkelheit
+      ort: Festplatz
+      highlight: true
+
+"2027-07-14":
+  motto: Senioren- und Kindernachmittag
+  punkte:
+    - zeit: 14:00
+      titel: Tag der Kinder
+      text: Zu ermäßigten Preisen, bis 18:00 Uhr
+      ort: Festplatz
+      highlight: true
+    - zeit: 14:00
+      titel: Bewirtung der Bruckmühler Altbürger
+      text: Zeichenausgabe ab dem 65. Lebensjahr von 13:30 bis 16:00 Uhr
+      ort: Festzelt
+    - zeit: 14:30
+      titel: Kasperltheater
+      ort: Festzelt
+    - zeit: 15:00
+      titel: Nachmittagsstimmung
+      text: Mit der Blaskapelle Bruckmühl
+      ort: Festzelt
+    - zeit: 17:00
+      titel: Mädchen- und Damenschießen
+      text: An der Torwand
+      ort: Festzelt
+    - zeit: 19:00
+      titel: Gemütlicher Festabend
+      text: Mit der Musikkapelle Vagen
+      ort: Festzelt
+
+"2027-07-15":
+  motto: Vollgas-Donnerstag mit Snoozy Beats
+  punkte:
+    - zeit: 17:00
+      titel: Festzeltbetrieb und Bierausschank
+      ort: Festzelt
+    - zeit: 19:00
+      titel: Gaudi mit Snoozy Beats
+      text: Die Party-Band
+      ort: Festzelt
+      highlight: true
+
+"2027-07-16":
+  motto: Tag der Betriebe und Vereine
+  punkte:
+    - zeit: 17:00
+      titel: Festzeltbetrieb und Bierausschank
+      ort: Festzelt
+    - zeit: 18:00
+      titel: Mannschaftsschießen
+      text: An der Torwand
+      ort: Festzelt
+    - zeit: 19:00
+      titel: Festabend mit Die Karolinenfelder
+      ort: Festzelt
+
+"2027-07-17":
+  motto: Boxen live
+  punkte:
+    - zeit: 13:00
+      titel: Festzeltbetrieb und Bierausschank
+      ort: Festzelt
+    - zeit: 13:30
+      titel: Kornhass Volksfest Fights
+      text: Boxen und Kickboxen live, bis 17:00 Uhr, im separaten Bereich
+      ort: Festzelt
+      highlight: true
+    - zeit: 19:00
+      titel: Volksfeststimmung mit Die Karolinenfelder
+      ort: Festzelt
+
+"2027-07-18":
+  motto: Festendspurt
+  punkte:
+    - zeit: 10:30
+      titel: Frühschoppen
+      ort: Festzelt
+    - zeit: 11:00
+      titel: Stoaheben
+      text: Im Zelt
+      ort: Festzelt
+    - zeit: 12:00
+      titel: Kaffee und Kuchen
+      text: An der Kaffeebar
+      ort: Festzelt
+    - zeit: 18:00
+      titel: Festendspurt
+      text: Mit der Blaskapelle Bruckmühl
+      ort: Festzelt
+      highlight: true
+    - zeit: 18:00
+      titel: Einzel- und Mannschaftsschießen
+      text: An der Torwand
+      ort: Festzelt

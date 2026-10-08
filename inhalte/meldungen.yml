@@ -1,0 +1,11 @@
+# AKTUELLE MELDUNGEN
+# Erscheinen als Balken oben in der App. Die App lädt sie beim Öffnen und alle 5 Minuten neu.
+# Keine Meldung: nur "[]" stehen lassen.
+#
+# Beispiel:
+# - text: Festzelt voll, im Biergarten gibt es noch Plätze.
+#   wichtig: true                # rot hervorgehoben (optional)
+#   bis: "2027-07-10 23:00"      # danach automatisch weg (optional)
+#   ab: "2027-07-10 18:00"       # erst ab dann sichtbar (optional)
+
+[]

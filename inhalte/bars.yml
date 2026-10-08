@@ -1,0 +1,135 @@
+# BARS UND GETRÄNKE
+# Aufbau wie bei der Speisekarte, nur mit "getraenke:" statt "gerichte:".
+#   - name: Weißbier
+#     preis: 6,50
+#     zusatz: 0,5 l
+
+einleitung: Neben dem Ausschank im Festzelt betreiben die Sparten des SV Bruckmühl ihre Bars, von der Kaffeebar bis zur Schnaps- und Cocktailbar. Die Getränkeliste ist noch ein Beispiel, die echten Preise für 2027 folgen.
+
+bars:
+
+  - name: Ausschank im Festzelt
+    info: Maxlrainer Festbier, frisch vom Fass
+    getraenke:
+      - name: Maß Festbier
+        preis: 12,60
+        zusatz: Preis 2026
+      - name: Maß Radler
+        preis: 12,60
+      - name: Maß alkoholfreies Bier
+        preis: 12,60
+      - name: Maß Spezi
+        preis: 9,50
+      - name: Maß Wasser
+        preis: 6,00
+
+  - name: Pils- und Weißbier-Bar
+    info: SVB-Handballer · ab dem Abend
+    getraenke:
+      - name: Weißbier
+        preis: 6,50
+        zusatz: 0,5 l
+      - name: Alkoholfreies Weißbier
+        preis: 6,50
+        zusatz: 0,5 l
+      - name: Russ'n
+        preis: 6,50
+        zusatz: Weißbier mit Zitronenlimo, 0,5 l
+      - name: Pils
+        preis: 5,00
+        zusatz: 0,33 l
+
+  - name: Weinbar
+    info: Ab dem Abend
+    gruppen:
+      - getraenke:
+          - name: Weißwein
+            preis: 6,50
+            zusatz: 0,2 l
+          - name: Rotwein
+            preis: 6,50
+            zusatz: 0,2 l
+          - name: Rosé
+            preis: 6,50
+            zusatz: 0,2 l
+          - name: Weinschorle
+            preis: 7,00
+            zusatz: 0,5 l
+      - titel: Sekt und Spritz
+        getraenke:
+          - name: Glas Sekt
+            preis: 5,50
+            zusatz: 0,1 l
+          - name: Hugo
+            preis: 8,50
+          - name: Aperol Spritz
+            preis: 8,50
+          - name: Flasche Sekt
+            preis: 29,00
+            zusatz: 0,75 l
+
+  - name: Schnaps- und Cocktailbar
+    info: Ab dem Abend · außen am Eingang Nord-Ost
+    gruppen:
+      - titel: Schnaps
+        hinweis: Je 2 cl
+        getraenke:
+          - name: Obstler
+            preis: 3,50
+          - name: Williamsbirne
+            preis: 4,00
+          - name: Enzian
+            preis: 4,00
+          - name: Kräuterlikör
+            preis: 3,50
+          - name: Haselnuss
+            preis: 3,50
+      - titel: Cocktails
+        getraenke:
+          - name: Caipirinha
+            preis: 10,00
+          - name: Mojito
+            preis: 10,00
+          - name: Gin Tonic
+            preis: 10,00
+          - name: Cuba Libre
+            preis: 9,00
+          - name: Wodka Energy
+            preis: 9,00
+      - titel: Ohne Alkohol
+        getraenke:
+          - name: Virgin Mojito
+            preis: 7,00
+          - name: Ipanema
+            preis: 7,00
+            zusatz: Limette, Rohrzucker, Ginger Ale
+
+  - name: Alkoholfreie Bar
+    info: SVB-Stockschützen · für Autofahrer und alle anderen
+    getraenke:
+      - name: Spezi
+        preis: 4,00
+        zusatz: 0,5 l
+      - name: Limo
+        preis: 4,00
+        zusatz: 0,5 l
+      - name: Apfelschorle
+        preis: 4,00
+        zusatz: 0,5 l
+      - name: Mineralwasser
+        preis: 3,50
+        zusatz: 0,5 l
+      - name: Energydrink
+        preis: 4,50
+        zusatz: 0,25 l
+
+  - name: Kaffeebar
+    info: SVB-Leichtathleten · nachmittags
+    getraenke:
+      - name: Tasse Kaffee
+        preis: 3,00
+      - name: Cappuccino
+        preis: 3,80
+      - name: Stück Kuchen
+        preis: 3,50
+        zusatz: Selbstgebacken

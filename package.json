@@ -1,0 +1,12 @@
+{
+  "name": "volksfest-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bauen": "node bauen.mjs",
+    "pruefen": "node bauen.mjs --nur-pruefen"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

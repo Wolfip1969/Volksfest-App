@@ -1,0 +1,48 @@
+# GRUNDDATEN DES VOLKSFESTS
+# Nach jeder Änderung prüft die App die Datei automatisch. Ist etwas falsch, bleibt die alte Version online.
+#
+# beginn:       erster Festtag als JJJJ-MM-TT
+# tage:         Anzahl der Festtage
+# testmodus:    true zeigt den Hinweis "Testversion". Vor dem Start auf false setzen.
+# reservierung: Adresse der Tischreservierung (leer lassen = kein Knopf)
+# heimweg/taxi: z. B.  - name: Taxi Muster
+#                        telefon: 08061 12345
+
+beginn: "2027-07-09"
+tage: 10
+testmodus: true
+reservierung: https://volksfest-bruckmuehl-reservierung.vercel.app/
+
+oeffnungszeiten:
+  - wann: Biergarten täglich
+    zeit: ab 14:30
+  - wann: Montag bis Donnerstag
+    zeit: ab 17:00
+  - wann: Freitag
+    zeit: ab 17:00
+  - wann: Samstag
+    zeit: ab 14:00
+  - wann: Sonntag
+    zeit: ab 11:00
+
+adresse:
+  - Volksfestplatz
+  - Rathausplatz
+  - 83052 Bruckmühl
+route: https://www.google.com/maps/dir/?api=1&destination=47.88388,11.92074
+
+links:
+  - name: Instagram
+    text: "@volksfest.bruckmuehl"
+    url: https://www.instagram.com/volksfest.bruckmuehl/
+  - name: Facebook
+    text: Volksfest Bruckmühl
+    url: https://www.facebook.com/share/1JwfhBW4DR/
+  - name: Webseite
+    text: svbruckmuehl.de/volksfest
+    url: https://svbruckmuehl.de/volksfest/
+
+heimweg:
+  taxi: []
+  bahn: https://www.bahn.de/buchung/abfahrten-ankuenfte
+  brb: https://www.brb.de/

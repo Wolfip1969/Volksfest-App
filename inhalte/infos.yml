@@ -1,0 +1,29 @@
+# INFOS UND ANFAHRT
+# infos:   Karten im Infos-Tab, entweder mit "punkte:" (titel + text) oder nur mit "text:"
+# anfahrt: Kästen unter dem Kartenbild im Lageplan
+
+infos:
+  - titel: Bezahlen und Bierzeichen
+    punkte:
+      - titel: Bierzeichen
+        text: "Gibt es an der Volksfestkasse. Mindestabnahme: 10 Stück."
+      - titel: Kartenzahlung
+        text: Bierzeichen kannst du am Kassenhäuschen im Festzelt mit Karte bezahlen. Es steht seitlich rechts hinter der Bühne.
+  - titel: Fundbüro und Erste Hilfe
+    punkte:
+      - titel: Fundbüro
+        text: Im Festzelt am Kassenhäuschen seitlich hinter der Bühne.
+      - titel: Erste Hilfe
+        text: Am Haupteingang steht ein BRK-Rettungswagen, dazu unterstützt der First Responder Bruckmühl. Bei kleineren Verletzungen hilft das Kassenhäuschen im Festzelt.
+  - titel: Maxlrainer Festbier
+    text: Das Festbier kommt von der Schlossbrauerei Maxlrain, die seit 1636 braut. Das Brauwasser stammt aus Quellen bei Adlfurt in der Gemeinde Bruckmühl. Mit jeder Maß unterstützt du das ehrenamtlich organisierte Volksfest und die Kinder- und Jugendarbeit des SV Bruckmühl.
+
+anfahrt:
+  - titel: Mit der Bahn
+    text: Mit der Bayerischen Regiobahn (BRB) kommst du bequem zum Bahnhof Bruckmühl. Von München, Holzkirchen und Rosenheim gibt es regelmäßige Verbindungen. Vom Bahnhof sind es nur wenige Gehminuten zum Festgelände.
+  - titel: Mit dem Auto
+    text: Das Festgelände ist gut ausgeschildert. Rund um den Volksfestplatz gibt es Parkplätze. An den Haupttagen kostet das Parken eine kleine Gebühr, der Erlös geht an die Sparte Fußball des SV Bruckmühl.
+  - titel: Mit dem Fahrrad
+    text: Fahrradstellplätze gibt es direkt am Festgelände.
+  - titel: Barrierefrei
+    text: Das Festgelände ist barrierefrei zugänglich, es gibt behindertengerechte Toiletten.

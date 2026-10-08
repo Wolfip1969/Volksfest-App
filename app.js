@@ -1,63 +1,16 @@
 /* =========================================================
-   DATEN: Hier alles ändern. Der Rest der Seite liest nur diese Werte.
-   Aktuell Platzhalter, keine echten Zusagen.
+   INHALTE stehen in inhalte/*.yml. Beim Veröffentlichen werden sie geprüft
+   und als daten.js eingebunden. Hier nur Darstellung und Logik.
    ========================================================= */
-const FEST_START = new Date(2027, 6, 9);   // 9. Juli 2027
-const FEST_TAGE  = 10;                      // bis 18. Juli
+const D = window.DATEN;
+const [jj, mm, tt] = D.FEST_START.split('-').map(Number);
+const FEST_START = new Date(jj, mm - 1, tt);
+const { FEST_TAGE, TESTMODUS, RESERVIERUNG_URL, ROUTE_URL, ZEITEN, ADRESSE, LINKS, TAXI, BAHN_URL, BRB_URL,
+  PROGRAMM, CATERER, LEGENDE, BARS_INTRO, BARS, INFOS, ANFAHRT, ZELT, SUCHWOERTER } = D;
+const ORTE = D.ORTE.map(o => ({ ...o, x: o.r[0] + o.r[2] / 2, y: o.r[1] + o.r[3] / 2 }));
+const LOGO_SRC = document.querySelector(".logo img").src;
 
-// Programmpunkte: zeit "18:00" oder ein Wort ("Abends", "Danach"). Bei Wörtern kann ca: "22:00" die ungefähre Uhrzeit
-// angeben, bis: "22:20" das Ende. Beides nutzt die Anzeige "Läuft gerade / Als Nächstes"; "Danach" ohne ca = 1 Std. nach dem Punkt davor.
-const PROGRAMM = {
-  // TESTDATEN: Festprogramm vom Vorjahr (Fr 10.7. bis So 19.7.2026), auf 9.-18.7.2027 gelegt.
-  0: { motto: "Festeinzug", slots: [
-      { zeit: "18:00", titel: "Großer Festeinzug", text: "Mit der Dreder Musi, Blaskapelle Bruckmühl und der Jugendkapelle Vagen", ort: "Festplatz", highlight: true },
-      { zeit: "Danach", titel: "Festabend", text: "Mit der Dreder Musi", ort: "Festzelt" } ]},
-  1: { motto: "Volleyball und Stimmung", slots: [
-      { zeit: "10:00", titel: "39. Volleyball-Volksfestturnier", text: "Auf der Volksfestwiese", ort: "Volksfestwiese" },
-      { zeit: "16:00", titel: "Festzeltbetrieb und Bierausschank", text: "", ort: "Festzelt" },
-      { zeit: "18:00", titel: "Stimmung mit der Dreder Musi", text: "", ort: "Festzelt" } ]},
-  2: { motto: "Frühschoppen und Konzert", slots: [
-      { zeit: "10:00", titel: "Volleyball-Volksfestturnier", text: "2. Tag", ort: "Volksfestwiese" },
-      { zeit: "10:30", titel: "Peter Hainz Gedächtnis-Schafkopfturnier", text: "Bis 12:30 Uhr, Anmeldung ab 10:00 Uhr", ort: "" },
-      { zeit: "10:30", titel: "Frühschoppen und Mittagessen", text: "Zu verbilligten Preisen, mit der Mangfalltaler Musi", ort: "Festzelt" },
-      { zeit: "12:00", titel: "Kaffee und Kuchen", text: "An der Kaffeebar", ort: "Festzelt" },
-      { zeit: "15:00", titel: "Zelt schließt", text: "Einlass ab 17:00 Uhr, nur mit Ticket", ort: "Festzelt" },
-      { zeit: "19:00", titel: "Konzert: HEINO & Almklausi", text: "Präsentiert vom Stadtmarketing, Tickets bei muenchenticket.de", ort: "Festzelt", highlight: true } ]},
-  3: { motto: "Traditionsabend mit Kesselfleischessen", slots: [
-      { zeit: "17:00", titel: "Festzeltbetrieb und Bierausschank", text: "", ort: "Festzelt" },
-      { zeit: "18:00", titel: "Stimmung und Gemütlichkeit", text: "Mit der Musikkapelle Vagen", ort: "Festzelt" },
-      { zeit: "18:00", titel: "Fußballerstammtisch", text: "Mit Mannschaftsschießen an der Torwand", ort: "Festzelt" },
-      { zeit: "19:00", titel: "D'Wendelstoana Schnoiza", text: "Und gemeinsamer Amboss-Polka-Plattler", ort: "Festzelt", highlight: true } ]},
-  4: { motto: "Brillantfeuerwerk", slots: [
-      { zeit: "17:00", titel: "Festzeltbetrieb und Bierausschank", text: "", ort: "Festzelt" },
-      { zeit: "19:00", titel: "Festabend mit der Harthauser Musi", text: "", ort: "Festzelt" },
-      { zeit: "Abends", ca: "22:00", bis: "22:20", titel: "Großes Brillantfeuerwerk", text: "Nach Einbruch der Dunkelheit", ort: "Festplatz", highlight: true } ]},
-  5: { motto: "Senioren- und Kindernachmittag", slots: [
-      { zeit: "14:00", titel: "Tag der Kinder", text: "Zu ermäßigten Preisen, bis 18:00 Uhr", ort: "Festplatz", highlight: true },
-      { zeit: "14:00", titel: "Bewirtung der Bruckmühler Altbürger", text: "Zeichenausgabe ab dem 65. Lebensjahr von 13:30 bis 16:00 Uhr", ort: "Festzelt" },
-      { zeit: "14:30", titel: "Kasperltheater", text: "", ort: "Festzelt" },
-      { zeit: "15:00", titel: "Nachmittagsstimmung", text: "Mit der Blaskapelle Bruckmühl", ort: "Festzelt" },
-      { zeit: "17:00", titel: "Mädchen- und Damenschießen", text: "An der Torwand", ort: "Festzelt" },
-      { zeit: "19:00", titel: "Gemütlicher Festabend", text: "Mit der Musikkapelle Vagen", ort: "Festzelt" } ]},
-  6: { motto: "Vollgas-Donnerstag mit Snoozy Beats", slots: [
-      { zeit: "17:00", titel: "Festzeltbetrieb und Bierausschank", text: "", ort: "Festzelt" },
-      { zeit: "19:00", titel: "Gaudi mit Snoozy Beats", text: "Die Party-Band", ort: "Festzelt", highlight: true } ]},
-  7: { motto: "Tag der Betriebe und Vereine", slots: [
-      { zeit: "17:00", titel: "Festzeltbetrieb und Bierausschank", text: "", ort: "Festzelt" },
-      { zeit: "18:00", titel: "Mannschaftsschießen", text: "An der Torwand", ort: "Festzelt" },
-      { zeit: "19:00", titel: "Festabend mit Die Karolinenfelder", text: "", ort: "Festzelt" } ]},
-  8: { motto: "Boxen live", slots: [
-      { zeit: "13:00", titel: "Festzeltbetrieb und Bierausschank", text: "", ort: "Festzelt" },
-      { zeit: "13:30", titel: "Kornhass Volksfest Fights", text: "Boxen und Kickboxen live, bis 17:00 Uhr, im separaten Bereich", ort: "Festzelt", highlight: true },
-      { zeit: "19:00", titel: "Volksfeststimmung mit Die Karolinenfelder", text: "", ort: "Festzelt" } ]},
-  9: { motto: "Festendspurt", slots: [
-      { zeit: "10:30", titel: "Frühschoppen", text: "", ort: "Festzelt" },
-      { zeit: "11:00", titel: "Stoaheben", text: "Im Zelt", ort: "Festzelt" },
-      { zeit: "12:00", titel: "Kaffee und Kuchen", text: "An der Kaffeebar", ort: "Festzelt" },
-      { zeit: "18:00", titel: "Festendspurt", text: "Mit der Blaskapelle Bruckmühl", ort: "Festzelt", highlight: true },
-      { zeit: "18:00", titel: "Einzel- und Mannschaftsschießen", text: "An der Torwand", ort: "Festzelt" } ]}
-};
-
+// Kategorien und Farben der Pläne (die Einträge selbst stehen in inhalte/plaene.yml)
 const KATEGORIEN = {
   zelt:    { name: "Festzelt",          farbe: "#d2332e" },
   fahr:    { name: "Fahrgeschäfte",     farbe: "#6a3fa0" },
@@ -67,28 +20,6 @@ const KATEGORIEN = {
   wc:      { name: "Toiletten",         farbe: "#1f6fb2" }
 };
 
-// FESTPLATZ: schematisch nach dem Rundgang-Video 2026 (U-Weg vom Rathausplatz um den Biergarten).
-// r = Fläche [x, y, Breite, Höhe] im Plan 400 x 300, oben = Festzelt, unten = Rathausplatz.
-const ORTE = [
-  { id: 1,  kat: "zelt",    name: "Festzelt",                     info: "Haupteingang zum Biergarten hin", r: [20, 22, 260, 56] },
-  { id: 2,  kat: "zelt",    name: "Biergarten",                   info: "Vor dem Haupteingang, zwischen den beiden Gassen", r: [102, 100, 96, 110] },
-  { id: 3,  kat: "fahr",    name: "Autoscooter",                  info: "Mitte, unter dem Biergarten", r: [102, 216, 96, 110] },
-  { id: 4,  kat: "fahr",    name: "Kinderkarussell",              info: "Mitte, unter dem Autoscooter", r: [102, 332, 96, 108] },
-  { id: 5,  kat: "eingang", name: "Eingang links",                info: "Vom Rathausplatz, Gasse direkt zum Haupteingang", r: [74, 446, 24, 12] },
-  { id: 6,  kat: "eingang", name: "Eingang rechts",               info: "Vom Rathausplatz, am Break Dance vorbei", r: [202, 446, 24, 12] },
-  { id: 7,  kat: "buden",   name: "Losbude Rotes Kreuz",          info: "Linke Gasse, gleich am Eingang", r: [20, 376, 50, 64] },
-  { id: 8,  kat: "fahr",    name: "Kettenkarussell",              info: "Linke Gasse, links", r: [20, 304, 50, 66] },
-  { id: 9,  kat: "buden",   name: "Bude",                         info: "Linke Gasse, links", r: [20, 238, 50, 60] },
-  { id: 10, kat: "buden",   name: "Bude",                         info: "Linke Gasse, links", r: [20, 172, 50, 60] },
-  { id: 11, kat: "buden",   name: "Torwand",                      info: "Linke Gasse, links, kurz vor dem Zelt", r: [20, 100, 50, 66] },
-  { id: 12, kat: "essen",   name: "Streini's Fischspezialitäten", info: "Steckerlfisch · rechte Gasse, gleich beim Zelt", r: [230, 100, 50, 70] },
-  { id: 13, kat: "buden",   name: "Buden",                        info: "Rechte Gasse, rechts", r: [230, 176, 50, 124] },
-  { id: 14, kat: "fahr",    name: "Break Dance",                  info: "Rechte Gasse, rechts am Ausgang", r: [230, 306, 50, 134] },
-  { id: 15, kat: "wc",      name: "Toiletten",                    info: "Hinter dem Festzelt rechts, Zugang über den Ausgang Toilette im Zelt", r: [238, 4, 42, 14] }
-].map(o => ({ ...o, x: o.r[0] + o.r[2] / 2, y: o.r[1] + o.r[3] / 2 }));
-
-// FESTZELT: nach Zeltplan 2024. Koordinaten in Plan-Einheiten (Zeltplan quer, Haupteingang unten);
-// r = Fläche [x, y, Breite, Höhe], p = Punkt [x, y]. Die App dreht den Plan hochkant.
 const ZELT_KAT = {
   eingang: { name: "Ein- und Ausgänge", farbe: "#2e7d32" },
   bar:     { name: "Bars",              farbe: "#d2332e" },
@@ -96,218 +27,9 @@ const ZELT_KAT = {
   wc:      { name: "Toiletten",         farbe: "#1f6fb2" },
   mehr:    { name: "Bühne und Service", farbe: "#8f1d19" }
 };
-const ZELT = [
-  { id: 1,  kat: "eingang", name: "Haupteingang",           info: "Gegenüber der Bühne", p: [803, 1258] },
-  { id: 2,  kat: "eingang", name: "Eingang Nord-West",      info: "Hinten links, zwischen Hainz Peter und Sigl", p: [553, 493] },
-  { id: 3,  kat: "eingang", name: "Eingang Nord-Ost",       info: "Hinten rechts, neben der Schnaps- und Cocktailbar", p: [1320, 493] },
-  { id: 4,  kat: "bar",     name: "Pils- und Weißbier-Bar", info: "SVB-Handballer · rechte Zeltseite, nahe Haupteingang", r: [1632, 1007, 128, 250] },
-  { id: 5,  kat: "bar",     name: "Weinbar",                info: "Rechte Zeltseite, auf Höhe der Bühne", r: [1635, 627, 127, 257] },
-  { id: 6,  kat: "bar",     name: "Kaffeebar",              info: "SVB-Leichtathleten · hinten rechts", r: [1473, 493, 162, 78] },
-  { id: 7,  kat: "bar",     name: "Alkoholfreie Bar",       info: "SVB-Stockschützen · hinter der Bühne, rechts neben der Kasse", r: [1128, 493, 127, 85] },
-  { id: 8,  kat: "bar",     name: "Schnaps- und Cocktailbar", info: "Außen am Eingang Nord-Ost", r: [1383, 433, 128, 60] },
-  { id: 9,  kat: "essen",   name: "SVB Volleyballer-Brotzeiten", info: "Brezn, Käse, Radi, Obazda · hinten links", r: [233, 493, 128, 80] },
-  { id: 10, kat: "essen",   name: "Hainz Peter",            info: "Hendl und Haxn · hinten links", r: [361, 493, 127, 80] },
-  { id: 11, kat: "essen",   name: "Catering mit Sigl",       info: "Warme Gerichte, Brotzeit · hinter der Bühne, links", r: [616, 493, 122, 80] },
-  { id: 12, kat: "wc",      name: "Toiletten",              info: "Außerhalb des Zelts, über den Ausgang Toilette", r: [1600, 240, 210, 110] },
-  { id: 13, kat: "wc",      name: "Ausgang Toilette",       info: "Rechte Zeltseite hinten, durch den Raucherbereich", p: [1762, 560] },
-  { id: 14, kat: "mehr",    name: "Bühne",                  info: "Mit Kränzen und SVB-Fahnen", r: [776, 677, 229, 130] },
-  { id: 15, kat: "mehr",    name: "Kasse",                  info: "Bierzeichen, Kartenzahlung, Fundbüro · hinter der Bühne", r: [997, 500, 127, 95] },
-  { id: 16, kat: "mehr",    name: "Raucherbereich",         info: "Außen entlang der rechten Zeltseite", r: [1762, 360, 128, 898] },
-  { id: 17, kat: "eingang", name: "Notausgang West",        info: "Nur im Notfall · linke Zeltseite", p: [103, 915] },
-  { id: 18, kat: "eingang", name: "Notausgang Ost",         info: "Nur im Notfall · rechte Zeltseite", p: [1762, 943] },
-  { id: 19, kat: "eingang", name: "Notausgang Süd",         info: "Nur im Notfall · vorne rechts", p: [1420, 1258] },
-  { id: 20, kat: "essen",   name: "Streini's Fischspezialitäten", info: "Steckerlfisch, Backfisch · außerhalb des Zelts, vorne rechts vom Haupteingang", r: [1230, 1285, 140, 70] }
-];
+
+// Graue Flächen der Tischreihen im Zeltplan
 const ZELT_FLAECHEN = [[110, 650, 465, 605], [596, 1148, 113, 107], [618, 690, 512, 388], [870, 1148, 522, 107], [1183, 650, 385, 470], [1455, 1148, 56, 107]];
-
-const CATERER = [
-  { name: "SVB Volleyballer-Brotzeiten", info: "Im Festzelt, hinten links", gruppen: [{ items: [
-      ["Große Brezn", "5,00", "1"],
-      ["Bierstangerl", "3,80", "3"],
-      ["Pizzaschifferl", "4,40", "1, 3", "Margherita"],
-      ["Portion Radi", "3,30"],
-      ["Portion Käse groß", "6,90", "3", "Emmentaler 200 g"],
-      ["Portion Käse klein", "3,60", "3", "Emmentaler 100 g"],
-      ["Käse-Mixteller", "8,20", "3"],
-      ["Obazda", "10,00", "3"] ]}],
-    fuss: "1) Gluten, Weizen. 2) Roggen, Sesam, Sesamsamen. 3) Milch und Milcherzeugnisse." },
-
-  { name: "Hainz Peter", info: "Im Festzelt, hinten links", gruppen: [{ items: [
-      ["1/2 Hendl mit Semmel", "13,30"],
-      ["Haxn mit Semmel", "13,30"] ]}] },
-
-  { name: "Streini's Fischspezialitäten", info: "Außerhalb des Zelts, rechts vom Haupteingang", gruppen: [{ items: [
-      ["Steckerlfisch mit Semmel", "18,00"],
-      ["Seelachs-Filet mit Kartoffelsalat", "15,50"],
-      ["Backfisch mit Kartoffelsalat", "11,00", "1"],
-      ["Mix-Box mit Remoulade", "11,00", "3", "Calamari, Fisch-Nuggets und Garnelen"],
-      ["Calamari mit Remoulade", "10,60", "3"],
-      ["Backfischsemmel", "7,80", "3"],
-      ["Lachssemmel", "5,50", "4"],
-      ["Fischsemmel", "5,20", "3"],
-      ["Portion Kartoffelsalat", "4,00", "1"],
-      ["Gemischter Salat", "8,70"],
-      ["Gemischter Salat mit Calamari", "10,00"],
-      ["Gemischter Salat mit Nuggets", "10,60"],
-      ["Gemischter Salat mit Garnelen", "11,60"] ]}],
-    fuss: "1) Geschmacksverstärker 2) E451 3) Süßungsmittel 4) Phosphat. Informationen über Zutaten, die Allergien oder Unverträglichkeiten auslösen können, gibt es auf Nachfrage am Stand." },
-
-  { name: "Catering mit Sigl", info: "Im Festzelt, hinter der Bühne links", gruppen: [
-    { items: [
-      ["Rollbraten mit Dunkelbiersoße, Kartoffel- und Krautsalat", "15,40", "a d e"],
-      ["Leberkäs mit Kartoffelsalat", "11,00", "d e 2 3 7"],
-      ["Grillfleisch mit Schmorzwiebeln und Krautsalat", "14,20", "c 4"],
-      ["Schweinswürschtl mit Sauerkraut", "11,00", "e 3 7"],
-      ["Schaschlikpfanne mit Semmel", "11,60", "a 2 3 8"],
-      ["Schaschlikpfanne mit Pommes", "14,00", "2 3 8"],
-      ["Currywurst mit Semmel", "9,60", "a 1 2 3 4 7 8"],
-      ["Currywurst mit Pommes", "11,00", "1 2 3 4 7 8"],
-      ["Vegane Currywurst mit Pommes", "11,60", "1 7 8"],
-      ["Portion Pommes", "5,00"],
-      ["Rahmschwammerl mit Semmelknödel", "11,00", "a b c d"],
-      ["Bayrischer Wurstsalat mit Semmel", "11,00", "a d e l 1 2 3 4 7 8"],
-      ["Kalter Braten mit Kren, Essiggurke und Breze", "11,10", "a c d 3 5 8"],
-      ["Rollbratensemmel", "5,10", "a"],
-      ["Leberkassemmel", "4,30", "a d e 2 3 7"] ]},
-    { titel: "Für die Kids", items: [
-      ["Semmelknödel mit Soße", "6,40"],
-      ["1 Paar Schweinswürschtl mit Pommes", "7,20"] ]},
-    { titel: "Nur am Montag", items: [
-      ["Kesselfleisch mit Sauerkraut und Brot", "13,20", "a"] ]},
-    { titel: "Sonntag: vergünstigter Mittagstisch", sub: "Bis 14:00 Uhr", items: [
-      ["Hirschgulasch mit Spätzle", "17,60", "a b c d"],
-      ["2 Weisse mit Breze", "7,20", "a d e 2 7", "Bis 12:00 Uhr"] ]}
-  ]}
-];
-
-// BARS: Betreiber laut Berichten auf svbruckmuehl.de. Preise sind BEISPIELE, nur die Maß (12,60 €, Stand 2026) ist echt.
-const BARS_INTRO = "Neben dem Ausschank im Festzelt betreiben die Sparten des SV Bruckmühl ihre Bars, von der Kaffeebar bis zur Schnaps- und Cocktailbar. Die Getränkeliste ist noch ein Beispiel, die echten Preise für 2027 folgen.";
-const BARS = [
-  { name: "Ausschank im Festzelt", info: "Maxlrainer Festbier, frisch vom Fass", gruppen: [{ items: [
-      ["Maß Festbier", "12,60", "", "Preis 2026"],
-      ["Maß Radler", "12,60"],
-      ["Maß alkoholfreies Bier", "12,60"],
-      ["Maß Spezi", "9,50"],
-      ["Maß Wasser", "6,00"] ]}] },
-
-  { name: "Pils- und Weißbier-Bar", info: "SVB-Handballer · ab dem Abend", gruppen: [{ items: [
-      ["Weißbier", "6,50", "", "0,5 l"],
-      ["Alkoholfreies Weißbier", "6,50", "", "0,5 l"],
-      ["Russ'n", "6,50", "", "Weißbier mit Zitronenlimo, 0,5 l"],
-      ["Pils", "5,00", "", "0,33 l"] ]}] },
-
-  { name: "Weinbar", info: "Ab dem Abend", gruppen: [
-    { items: [
-      ["Weißwein", "6,50", "", "0,2 l"],
-      ["Rotwein", "6,50", "", "0,2 l"],
-      ["Rosé", "6,50", "", "0,2 l"],
-      ["Weinschorle", "7,00", "", "0,5 l"] ]},
-    { titel: "Sekt und Spritz", items: [
-      ["Glas Sekt", "5,50", "", "0,1 l"],
-      ["Hugo", "8,50"],
-      ["Aperol Spritz", "8,50"],
-      ["Flasche Sekt", "29,00", "", "0,75 l"] ]}
-  ]},
-
-  { name: "Schnaps- und Cocktailbar", info: "Ab dem Abend · außen am Eingang Nord-Ost", gruppen: [
-    { titel: "Schnaps", sub: "Je 2 cl", items: [
-      ["Obstler", "3,50"],
-      ["Williamsbirne", "4,00"],
-      ["Enzian", "4,00"],
-      ["Kräuterlikör", "3,50"],
-      ["Haselnuss", "3,50"] ]},
-    { titel: "Cocktails", items: [
-      ["Caipirinha", "10,00"],
-      ["Mojito", "10,00"],
-      ["Gin Tonic", "10,00"],
-      ["Cuba Libre", "9,00"],
-      ["Wodka Energy", "9,00"] ]},
-    { titel: "Ohne Alkohol", items: [
-      ["Virgin Mojito", "7,00"],
-      ["Ipanema", "7,00", "", "Limette, Rohrzucker, Ginger Ale"] ]}
-  ]},
-
-  { name: "Alkoholfreie Bar", info: "SVB-Stockschützen · für Autofahrer und alle anderen", gruppen: [{ items: [
-      ["Spezi", "4,00", "", "0,5 l"],
-      ["Limo", "4,00", "", "0,5 l"],
-      ["Apfelschorle", "4,00", "", "0,5 l"],
-      ["Mineralwasser", "3,50", "", "0,5 l"],
-      ["Energydrink", "4,50", "", "0,25 l"] ]}] },
-
-  { name: "Kaffeebar", info: "SVB-Leichtathleten · nachmittags", gruppen: [{ items: [
-      ["Tasse Kaffee", "3,00"],
-      ["Cappuccino", "3,80"],
-      ["Stück Kuchen", "3,50", "", "Selbstgebacken"] ]}] }
-];
-
-const LEGENDE = [
-  "Allergene: a) glutenhaltiges Getreide b) Hühnerei c) Milch (Laktose) d) Sellerie e) Senf f) Fisch g) Krebstiere h) Schalenfrüchte i) Erdnuss j) Sesam k) Soja l) Schwefeldioxid/Sulfite m) Lupinen n) Weichtiere",
-  "Zusatzstoffe bei Sigl: 1) Farbstoff 2) Konservierungsstoff 3) Antioxidationsmittel 4) Geschmacksverstärker 5) geschwefelt 6) geschwärzt 7) Phosphat 8) Süßungsmittel"
-];
-
-const ZEITEN = [
-  ["Biergarten täglich", "ab 14:30"],
-  ["Montag bis Donnerstag", "ab 17:00"],
-  ["Freitag", "ab 17:00"],
-  ["Samstag", "ab 14:00"],
-  ["Sonntag", "ab 11:00"]
-]; // Platzhalter
-
-// ANFAHRT: Texte von svbruckmuehl.de/volksfest/#anfahrt
-const ADRESSE = ["Volksfestplatz", "Rathausplatz", "83052 Bruckmühl"];
-const ROUTE_URL = "https://www.google.com/maps/dir/?api=1&destination=47.88388,11.92074";
-const ANFAHRT = [
-  ["Mit der Bahn", "Mit der Bayerischen Regiobahn (BRB) kommst du bequem zum Bahnhof Bruckmühl. Von München, Holzkirchen und Rosenheim gibt es regelmäßige Verbindungen. Vom Bahnhof sind es nur wenige Gehminuten zum Festgelände."],
-  ["Mit dem Auto", "Das Festgelände ist gut ausgeschildert. Rund um den Volksfestplatz gibt es Parkplätze. An den Haupttagen kostet das Parken eine kleine Gebühr, der Erlös geht an die Sparte Fußball des SV Bruckmühl."],
-  ["Mit dem Fahrrad", "Fahrradstellplätze gibt es direkt am Festgelände."],
-  ["Barrierefrei", "Das Festgelände ist barrierefrei zugänglich, es gibt behindertengerechte Toiletten."]
-];
-
-// SUCHE: Alltagswörter, die auf Begriffe in der App umgeleitet werden. Links das, was Besucher tippen, rechts was in der App steht.
-const SUCHWOERTER = {
-  "fundsache": "fundbüro", "fundsachen": "fundbüro", "verloren": "fundbüro", "vergessen": "fundbüro", "liegen lassen": "fundbüro", "geldbeutel": "fundbüro", "handy": "fundbüro", "schlüssel": "fundbüro",
-  "klo": "toilette", "wc": "toilette", "toilette": "toilette", "toiletten": "toilette",
-  "sanitäter": "erste hilfe", "verletzt": "erste hilfe", "arzt": "erste hilfe", "notfall": "erste hilfe", "brk": "erste hilfe", "pflaster": "erste hilfe",
-  "parken": "mit dem auto", "parkplatz": "mit dem auto", "parkgebühr": "mit dem auto",
-  "zug": "bahn", "bahnhof": "bahn", "brb": "bahn",
-  "rad": "fahrrad", "radl": "fahrrad",
-  "rollstuhl": "barrierefrei", "rollator": "barrierefrei",
-  "ec": "kartenzahlung", "karte zahlen": "kartenzahlung", "girocard": "kartenzahlung", "bargeld": "bezahlen", "zahlen": "bezahlen", "bon": "bierzeichen", "bons": "bierzeichen", "marken": "bierzeichen",
-  "tisch": "reservier", "platz reservieren": "reservier",
-  "geöffnet": "öffnungszeiten", "offen": "öffnungszeiten", "wann auf": "öffnungszeiten", "uhrzeit": "öffnungszeiten",
-  "ohne alkohol": "alkoholfrei", "autofahrer": "alkoholfrei", "softdrink": "alkoholfrei",
-  "kinder": "kids", "kind": "kids",
-  "musik": "musi", "band": "musi", "kapelle": "musi",
-  "vegetarisch": "vegan", "veggie": "vegan",
-  "metzger": "sigl", "metzgerei": "sigl", "hendl": "hendl", "haxn": "haxn",
-  "adresse": "volksfestplatz", "anfahrt": "anfahrt", "navi": "route"
-};
-
-// HEIMWEG: Taxi-Nummern als ["Name", "Telefonnummer"] eintragen, solange leer steht "Nummern folgen".
-const TAXI = [];
-const BAHN_URL = "https://www.bahn.de/buchung/abfahrten-ankuenfte";
-const BRB_URL = "https://www.brb.de/";
-
-const INFOS = [
-  { titel: "Bezahlen und Bierzeichen", punkte: [
-    ["Bierzeichen", "Gibt es an der Volksfestkasse. Mindestabnahme: 10 Stück."],
-    ["Kartenzahlung", "Bierzeichen kannst du am Kassenhäuschen im Festzelt mit Karte bezahlen. Es steht seitlich rechts hinter der Bühne."] ]},
-  { titel: "Fundbüro und Erste Hilfe", punkte: [
-    ["Fundbüro", "Im Festzelt am Kassenhäuschen seitlich hinter der Bühne."],
-    ["Erste Hilfe", "Am Haupteingang steht ein BRK-Rettungswagen, dazu unterstützt der First Responder Bruckmühl. Bei kleineren Verletzungen hilft das Kassenhäuschen im Festzelt."] ]},
-  { titel: "Maxlrainer Festbier", text: "Das Festbier kommt von der Schlossbrauerei Maxlrain, die seit 1636 braut. Das Brauwasser stammt aus Quellen bei Adlfurt in der Gemeinde Bruckmühl. Mit jeder Maß unterstützt du das ehrenamtlich organisierte Volksfest und die Kinder- und Jugendarbeit des SV Bruckmühl." }
-];
-/* TESTMODUS: auf false setzen, sobald Programm und Speisekarte für 2027 echt sind */
-const TESTMODUS = true;
-const LOGO_SRC = document.querySelector(".logo img").src;
-const LINKS = [
-  { name: "Instagram", text: "@volksfest.bruckmuehl", url: "https://www.instagram.com/volksfest.bruckmuehl/" },
-  { name: "Facebook", text: "Volksfest Bruckmühl", url: "https://www.facebook.com/share/1JwfhBW4DR/" },
-  { name: "Webseite", text: "svbruckmuehl.de/volksfest", url: "https://svbruckmuehl.de/volksfest/" }
-];
-const RESERVIERUNG_URL = "https://volksfest-bruckmuehl-reservierung.vercel.app/";
-
-/* ========================================================= */
 
 const $ = s => document.querySelector(s);
 const wt = ["So","Mo","Di","Mi","Do","Fr","Sa"];

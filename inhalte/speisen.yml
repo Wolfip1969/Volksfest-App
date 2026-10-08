@@ -1,0 +1,161 @@
+# SPEISEKARTE
+# Pro Caterer: name, info (Standort), gerichte. Bei mehreren Abschnitten statt "gerichte:" "gruppen:" mit titel und gerichte.
+#
+#   - name: Große Brezn
+#     preis: 5,00          (mit Komma, ohne €)
+#     allergene: "1, 3"    (optional)
+#     zusatz: Margherita   (optional, kleine Zeile darunter)
+
+caterer:
+
+  - name: SVB Volleyballer-Brotzeiten
+    info: Im Festzelt, hinten links
+    gerichte:
+      - name: Große Brezn
+        preis: 5,00
+        allergene: "1"
+      - name: Bierstangerl
+        preis: 3,80
+        allergene: "3"
+      - name: Pizzaschifferl
+        preis: 4,40
+        allergene: 1, 3
+        zusatz: Margherita
+      - name: Portion Radi
+        preis: 3,30
+      - name: Portion Käse groß
+        preis: 6,90
+        allergene: "3"
+        zusatz: Emmentaler 200 g
+      - name: Portion Käse klein
+        preis: 3,60
+        allergene: "3"
+        zusatz: Emmentaler 100 g
+      - name: Käse-Mixteller
+        preis: 8,20
+        allergene: "3"
+      - name: Obazda
+        preis: 10,00
+        allergene: "3"
+    fussnote: 1) Gluten, Weizen. 2) Roggen, Sesam, Sesamsamen. 3) Milch und Milcherzeugnisse.
+
+  - name: Hainz Peter
+    info: Im Festzelt, hinten links
+    gerichte:
+      - name: 1/2 Hendl mit Semmel
+        preis: 13,30
+      - name: Haxn mit Semmel
+        preis: 13,30
+
+  - name: Streini's Fischspezialitäten
+    info: Außerhalb des Zelts, rechts vom Haupteingang
+    gerichte:
+      - name: Steckerlfisch mit Semmel
+        preis: 18,00
+      - name: Seelachs-Filet mit Kartoffelsalat
+        preis: 15,50
+      - name: Backfisch mit Kartoffelsalat
+        preis: 11,00
+        allergene: "1"
+      - name: Mix-Box mit Remoulade
+        preis: 11,00
+        allergene: "3"
+        zusatz: Calamari, Fisch-Nuggets und Garnelen
+      - name: Calamari mit Remoulade
+        preis: 10,60
+        allergene: "3"
+      - name: Backfischsemmel
+        preis: 7,80
+        allergene: "3"
+      - name: Lachssemmel
+        preis: 5,50
+        allergene: "4"
+      - name: Fischsemmel
+        preis: 5,20
+        allergene: "3"
+      - name: Portion Kartoffelsalat
+        preis: 4,00
+        allergene: "1"
+      - name: Gemischter Salat
+        preis: 8,70
+      - name: Gemischter Salat mit Calamari
+        preis: 10,00
+      - name: Gemischter Salat mit Nuggets
+        preis: 10,60
+      - name: Gemischter Salat mit Garnelen
+        preis: 11,60
+    fussnote: 1) Geschmacksverstärker 2) E451 3) Süßungsmittel 4) Phosphat. Informationen über Zutaten, die Allergien oder Unverträglichkeiten auslösen können, gibt es auf Nachfrage am Stand.
+
+  - name: Catering mit Sigl
+    info: Im Festzelt, hinter der Bühne links
+    gruppen:
+      - gerichte:
+          - name: Rollbraten mit Dunkelbiersoße, Kartoffel- und Krautsalat
+            preis: 15,40
+            allergene: a d e
+          - name: Leberkäs mit Kartoffelsalat
+            preis: 11,00
+            allergene: d e 2 3 7
+          - name: Grillfleisch mit Schmorzwiebeln und Krautsalat
+            preis: 14,20
+            allergene: c 4
+          - name: Schweinswürschtl mit Sauerkraut
+            preis: 11,00
+            allergene: e 3 7
+          - name: Schaschlikpfanne mit Semmel
+            preis: 11,60
+            allergene: a 2 3 8
+          - name: Schaschlikpfanne mit Pommes
+            preis: 14,00
+            allergene: 2 3 8
+          - name: Currywurst mit Semmel
+            preis: 9,60
+            allergene: a 1 2 3 4 7 8
+          - name: Currywurst mit Pommes
+            preis: 11,00
+            allergene: 1 2 3 4 7 8
+          - name: Vegane Currywurst mit Pommes
+            preis: 11,60
+            allergene: 1 7 8
+          - name: Portion Pommes
+            preis: 5,00
+          - name: Rahmschwammerl mit Semmelknödel
+            preis: 11,00
+            allergene: a b c d
+          - name: Bayrischer Wurstsalat mit Semmel
+            preis: 11,00
+            allergene: a d e l 1 2 3 4 7 8
+          - name: Kalter Braten mit Kren, Essiggurke und Breze
+            preis: 11,10
+            allergene: a c d 3 5 8
+          - name: Rollbratensemmel
+            preis: 5,10
+            allergene: a
+          - name: Leberkassemmel
+            preis: 4,30
+            allergene: a d e 2 3 7
+      - titel: Für die Kids
+        gerichte:
+          - name: Semmelknödel mit Soße
+            preis: 6,40
+          - name: 1 Paar Schweinswürschtl mit Pommes
+            preis: 7,20
+      - titel: Nur am Montag
+        gerichte:
+          - name: Kesselfleisch mit Sauerkraut und Brot
+            preis: 13,20
+            allergene: a
+      - titel: "Sonntag: vergünstigter Mittagstisch"
+        hinweis: Bis 14:00 Uhr
+        gerichte:
+          - name: Hirschgulasch mit Spätzle
+            preis: 17,60
+            allergene: a b c d
+          - name: 2 Weisse mit Breze
+            preis: 7,20
+            allergene: a d e 2 7
+            zusatz: Bis 12:00 Uhr
+
+legende:
+  - "Allergene: a) glutenhaltiges Getreide b) Hühnerei c) Milch (Laktose) d) Sellerie e) Senf f) Fisch g) Krebstiere h) Schalenfrüchte i) Erdnuss j) Sesam k) Soja l) Schwefeldioxid/Sulfite m) Lupinen n) Weichtiere"
+  - "Zusatzstoffe bei Sigl: 1) Farbstoff 2) Konservierungsstoff 3) Antioxidationsmittel 4) Geschmacksverstärker 5) geschwefelt 6) geschwärzt 7) Phosphat 8) Süßungsmittel"

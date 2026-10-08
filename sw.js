@@ -1,7 +1,7 @@
-// Bei jeder Änderung an Dateien die Versionsnummer erhöhen, damit Handys den neuen Stand laden.
-const VERSION = 'volksfest-v12';
+// Die Version (VERSION) setzt bauen.mjs automatisch, damit Handys jeden neuen Stand laden.
+const VERSION = 'volksfest-dev'; // wird beim Bauen automatisch ersetzt
 const DATEIEN = [
-  './', 'index.html', 'app.js', 'manifest.webmanifest',
+  './', 'index.html', 'app.js', 'daten.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/svb-logo.png', 'icons/maxlrainer-logo.png', 'icons/karte-anfahrt.jpg',
   'fonts/barlow-latin-500-normal.woff2', 'fonts/barlow-latin-600-normal.woff2',
   'fonts/barlow-latin-700-normal.woff2', 'fonts/montserrat-latin-900-normal.woff2'
@@ -21,10 +21,11 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
-  // Seite und Daten (app.js): erst Netz (aktuelles Programm), ohne Netz die gespeicherte Version
-  const istApp = new URL(req.url).pathname.endsWith('/app.js');
+  // Seite, app.js und daten.js: erst Netz (aktuelles Programm), ohne Netz die gespeicherte Version
+  const datei = new URL(req.url).pathname.split('/').pop();
+  const istApp = datei === 'app.js' || datei === 'daten.js';
   if (req.mode === 'navigate' || istApp) {
-    const key = istApp ? 'app.js' : 'index.html';
+    const key = istApp ? datei : 'index.html';
     e.respondWith(
       fetch(req).then(r => { const k = r.clone(); caches.open(VERSION).then(c => c.put(key, k)); return r; })
         .catch(() => caches.match(key))
