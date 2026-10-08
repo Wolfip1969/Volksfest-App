@@ -160,6 +160,7 @@ for (const [k, v] of Object.entries(lade('suchwoerter') || {})) {
 const M = 'inhalte/meldungen.yml';
 const MELDUNGEN = liste(lade('meldungen'), M, '').map((m, k) => {
   const wo = `Meldung ${k + 1}`;
+  if (typeof m === 'string') { meld(M, wo, `bitte ohne eckige Klammern und mit "- text:" davor schreiben, also:  - text: ${m}`); return { text: m }; }
   const o = { text: pflicht(m, 'text', M, wo) };
   if (m?.wichtig) o.wichtig = true;
   for (const f of ['ab', 'bis']) {
