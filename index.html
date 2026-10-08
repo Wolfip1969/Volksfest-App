@@ -94,6 +94,13 @@ section[hidden]{display:none}
 .adresse{margin:12px 0}
 .adresse p{margin:0}
 .adresse b{display:block;font-size:17px}
+details.abschnitt{border-bottom:1px solid var(--linie);padding-bottom:6px;margin-bottom:6px}
+details.abschnitt[open]{padding-bottom:18px}
+details.abschnitt > summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+details.abschnitt > summary::-webkit-details-marker{display:none}
+details.abschnitt > summary::after{content:"+";font-size:30px;font-weight:700;color:var(--titel);line-height:1;margin-top:10px}
+details.abschnitt[open] > summary::after{content:"\2212"}
+details.abschnitt > summary .titel{margin:18px 0 12px}
 .zone{cursor:pointer}
 .zone rect,.zone path,.zone circle{transition:opacity .15s}
 .pin{cursor:pointer}
@@ -238,22 +245,27 @@ nav button[aria-selected="true"]{color:var(--titel)}
   </section>
 
   <section id="tab-plan" role="tabpanel" hidden>
-    <h2 class="titel">Lageplan</h2>
+    <details class="abschnitt" open>
+    <summary><h2 class="titel">Festplatz</h2></summary>
     <div class="planbox hochkant">
       <svg id="plan" viewBox="0 0 300 470" role="img" aria-label="Schematischer Lageplan des Festplatzes"></svg>
     </div>
     <div class="filter" id="planfilter" role="group" aria-label="Filter"></div>
     <ul class="liste" id="planliste"></ul>
+    </details>
 
-    <h2 class="titel">Festzelt</h2>
+    <details class="abschnitt">
+    <summary><h2 class="titel">Festzelt</h2></summary>
     <p class="intro">Nach dem Zeltplan 2024. Unten ist der Haupteingang, gegenüber die Bühne. „Links“ und „rechts“ in der Liste gelten vom Haupteingang aus.</p>
     <div class="planbox zeltbox">
       <svg id="zelt" viewBox="0 0 1890 1150" role="img" aria-label="Plan des Festzelts mit Eingängen, Bars, Essensständen und Toiletten"></svg>
     </div>
     <div class="filter" id="zeltfilter" role="group" aria-label="Filter Festzelt"></div>
     <ul class="liste" id="zeltliste"></ul>
+    </details>
 
-    <h2 class="titel">Anfahrt</h2>
+    <details class="abschnitt">
+    <summary><h2 class="titel">Anfahrt</h2></summary>
     <figure class="anfahrtkarte">
       <div class="kartenbild">
         <img src="icons/karte-anfahrt.jpg" width="1000" height="640" alt="Karte von Bruckmühl mit dem Volksfestplatz am Rathausplatz und dem Bahnhof Bruckmühl">
@@ -263,6 +275,7 @@ nav button[aria-selected="true"]{color:var(--titel)}
     </figure>
     <div class="adresse karte" id="adresse"></div>
     <div class="raster" id="anfahrt"></div>
+    </details>
   </section>
 
   <section id="tab-essen" role="tabpanel" hidden>

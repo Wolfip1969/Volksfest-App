@@ -309,6 +309,8 @@ function springe(z){
   }
   else el = document.querySelector(z.el);
   if (!el) return;
+  // Zugeklappte Abschnitte (z. B. Festzelt im Lageplan) öffnen, damit der Treffer sichtbar ist
+  for (let d = el.closest('details'); d; d = d.parentElement.closest('details')) d.open = true;
   el.scrollIntoView({ block: 'center' });
   el.classList.remove('aufblitzen'); void el.offsetWidth; el.classList.add('aufblitzen');
 }
