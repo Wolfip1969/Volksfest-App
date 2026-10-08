@@ -1,5 +1,5 @@
 // Bei jeder Änderung an Dateien die Versionsnummer erhöhen, damit Handys den neuen Stand laden.
-const VERSION = 'volksfest-v6';
+const VERSION = 'volksfest-v7';
 const DATEIEN = [
   './', 'index.html', 'app.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/svb-logo.png', 'icons/karte-anfahrt.jpg',

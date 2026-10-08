@@ -73,6 +73,43 @@ const ORTE = [
   { id: 6, kat: "essen",  name: "Imbiss B",                 info: "Platzhalter", x: 320, y: 250 }
 ];
 
+// FESTZELT: nach Zeltplan 2024. Koordinaten in Plan-Einheiten (Zeltplan quer, Haupteingang unten);
+// r = Fläche [x, y, Breite, Höhe], p = Punkt [x, y]. Die App dreht den Plan hochkant.
+const ZELT_KAT = {
+  eingang: { name: "Ein- und Ausgänge", farbe: "#2e7d32" },
+  bar:     { name: "Bars",              farbe: "#d2332e" },
+  essen:   { name: "Essen",             farbe: "#8a8a8a" },
+  wc:      { name: "Toiletten",         farbe: "#1f6fb2" },
+  mehr:    { name: "Bühne und Service", farbe: "#8f1d19" }
+};
+const ZELT = [
+  { id: 1,  kat: "eingang", name: "Haupteingang",           info: "Gegenüber der Bühne", p: [803, 1258] },
+  { id: 2,  kat: "eingang", name: "Eingang Nord-West",      info: "Hinten links, zwischen Hendl und Metzger", p: [553, 493] },
+  { id: 3,  kat: "eingang", name: "Eingang Nord-Ost",       info: "Hinten rechts, neben der Schnapsbar", p: [1320, 493] },
+  { id: 4,  kat: "bar",     name: "Pils- und Weißbier-Bar", info: "SVB-Handballer · rechte Zeltseite, nahe Haupteingang", r: [1632, 1007, 128, 250] },
+  { id: 5,  kat: "bar",     name: "Weinbar",                info: "Rechte Zeltseite, auf Höhe der Bühne", r: [1635, 627, 127, 257] },
+  { id: 6,  kat: "bar",     name: "Kaffeebar",              info: "SVB-Leichtathleten · hinten rechts", r: [1473, 493, 162, 78] },
+  { id: 7,  kat: "bar",     name: "Alkoholfreie Bar",       info: "SVB-Stockschützen · hinter der Bühne, rechts neben der Kasse", r: [1128, 493, 127, 85] },
+  { id: 8,  kat: "bar",     name: "Schnapsbar",             info: "Außen am Eingang Nord-Ost", r: [1383, 433, 128, 60] },
+  { id: 9,  kat: "essen",   name: "Käse und Radi",          info: "SVB-Volleyballer · hinten links", r: [233, 493, 128, 80] },
+  { id: 10, kat: "essen",   name: "Hendl",                  info: "Hinten links", r: [361, 493, 127, 80] },
+  { id: 11, kat: "essen",   name: "Metzger",                info: "Hinter der Bühne, links", r: [616, 493, 122, 80] },
+  { id: 12, kat: "wc",      name: "Toiletten",              info: "Außerhalb des Zelts, über den Ausgang Toilette", r: [1600, 240, 210, 110] },
+  { id: 13, kat: "wc",      name: "Ausgang Toilette",       info: "Rechte Zeltseite hinten, durch den Raucherbereich", p: [1762, 560] },
+  { id: 14, kat: "mehr",    name: "Bühne",                  info: "Mit Kränzen und SVB-Fahnen", r: [776, 677, 229, 130] },
+  { id: 15, kat: "mehr",    name: "Kasse",                  info: "Bierzeichen, Kartenzahlung, Fundbüro · hinter der Bühne", r: [997, 500, 127, 95] },
+  { id: 16, kat: "mehr",    name: "Raucherbereich",         info: "Außen entlang der rechten Zeltseite", r: [1762, 360, 128, 898] },
+  { id: 17, kat: "eingang", name: "Notausgang West",        info: "Nur im Notfall · linke Zeltseite", p: [103, 915] },
+  { id: 18, kat: "eingang", name: "Notausgang Ost",         info: "Nur im Notfall · rechte Zeltseite", p: [1762, 943] },
+  { id: 19, kat: "eingang", name: "Notausgang Heufeld",     info: "Nur im Notfall · vorne rechts", p: [1420, 1258] }
+];
+// Tischbereiche: Name und Position der Beschriftung (hinten = an der Rückwand, vorne = am Haupteingang)
+const ZELT_TISCHE = {
+  hinten: [["Kirchdorf", 168], ["Holzham", 300], ["Ginsham", 428], ["Hornau", 555], ["Noderwiechs", 1189], ["Sonnenwiechs", 1316], ["Högling", 1444], ["Weihenlinden", 1571]],
+  vorne:  [["Bergham", 166], ["Mittenkirchen", 299], ["Thalham", 424], ["Waith", 547], ["Feldkirchen", 683], ["Bad Aibling", 927], ["Hinrichssegen", 1060], ["Heufeldmühle", 1192], ["Waldheim", 1316], ["Götting", 1569]]
+};
+const ZELT_FLAECHEN = [[110, 650, 465, 605], [596, 1148, 113, 107], [618, 690, 512, 388], [870, 1148, 522, 107], [1183, 650, 385, 470], [1455, 1148, 56, 107]];
+
 const CATERER = [
   { name: "SVB Volleyballer-Brotzeiten", gruppen: [{ items: [
       ["Große Brezn", "5,00", "1"],
@@ -341,6 +378,47 @@ $('#plan').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key ===
 $('#planliste').addEventListener('click', e => { const b = e.target.closest('.eintrag'); if (b) waehle(+b.dataset.id); });
 $('#planfilter').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { filter = b.dataset.k; gewaehlt = null; zeichnePlan(); } });
 
+/* Festzelt: Plan quer gezeichnet, im Uhrzeigersinn hochkant gedreht */
+const ZT = (x, y) => [1300 - y, x - 20];
+const zRect = ([x, y, w, h]) => { const [nx, ny] = ZT(x, y + h); return [nx, ny, h, w]; };
+const zMitte = o => o.p ? ZT(...o.p) : (([x, y, w, h]) => [x + w / 2, y + h / 2])(zRect(o.r));
+let zeltFilter = 'alle', zeltGew = null;
+function zeichneZelt(){
+  const sichtbar = ZELT.filter(o => zeltFilter === 'alle' || o.kat === zeltFilter);
+  const rect = (r, attr) => { const [x, y, w, h] = zRect(r); return `<rect x="${x}" y="${y}" width="${w}" height="${h}" ${attr}/>`; };
+  const linie = pts => 'M' + pts.map(p => ZT(...p).join(' ')).join('L');
+  const grund = ZELT_FLAECHEN.map(f => rect(f, 'rx="10" fill="var(--linie)" opacity=".6"')).join('')
+    + rect([103, 493, 1659, 765], 'rx="6" fill="none" stroke="var(--text)" stroke-width="6"')
+    + `<path d="${linie([[1762, 560], [1840, 560], [1840, 300], [1810, 300]])}" fill="none" stroke="${ZELT_KAT.wc.farbe}" stroke-width="5" stroke-dasharray="14 10"/>`
+    + ZELT.filter(o => o.r).map(o => rect(o.r, `rx="8" fill="${ZELT_KAT[o.kat].farbe}" fill-opacity=".18" stroke="${ZELT_KAT[o.kat].farbe}" stroke-width="3"`)).join('')
+    + (([x, y]) => `<text x="${x}" y="${y - 50}" text-anchor="middle" font-size="40" font-weight="800" fill="var(--text)" font-family="sans-serif">Bühne</text>`)(zMitte(ZELT.find(o => o.name === 'Bühne')))
+    + ZELT_TISCHE.hinten.map(([n, x]) => `<text x="715" y="${x - 10}" text-anchor="end" font-size="30" fill="var(--leise)" font-family="sans-serif">${esc(n)}</text>`).join('')
+    + ZELT_TISCHE.vorne.map(([n, x]) => `<text x="52" y="${x - 10}" font-size="30" fill="var(--leise)" font-family="sans-serif">${esc(n)}</text>`).join('');
+  const pins = sichtbar.map(o => {
+    const k = ZELT_KAT[o.kat], an = zeltGew === o.id, [x, y] = zMitte(o);
+    return `<g class="pin" data-id="${o.id}" tabindex="0" role="button" aria-label="${esc(o.name)}">
+      <circle cx="${x}" cy="${y}" r="${an ? 48 : 36}" fill="${k.farbe}" stroke="${an ? 'var(--blau)' : '#fff'}" stroke-width="${an ? 10 : 5}"/>
+      <text x="${x}" y="${y + 13}" text-anchor="middle" font-size="36" font-weight="800" fill="#fff" font-family="sans-serif">${o.id}</text></g>`;
+  }).join('');
+  $('#zelt').innerHTML = grund + pins;
+
+  $('#zeltfilter').innerHTML = [['alle','Alle'], ...Object.entries(ZELT_KAT).map(([k,v]) => [k, v.name])]
+    .map(([k,n]) => `<button class="chip" data-k="${k}" aria-pressed="${zeltFilter === k}">${n}</button>`).join('');
+
+  $('#zeltliste').innerHTML = sichtbar.map(o => {
+    const k = ZELT_KAT[o.kat];
+    return `<li><button class="eintrag" data-id="${o.id}" ${zeltGew === o.id ? 'aria-current="true"' : ''}>
+      <span class="nr" style="background:${k.farbe}">${o.id}</span>
+      <span><b>${esc(o.name)}</b><small>${esc(o.info)}</small></span></button></li>`;
+  }).join('');
+}
+function waehleZelt(id){ zeltGew = zeltGew === id ? null : id; zeichneZelt(); }
+$('#zelt').addEventListener('click', e => { const g = e.target.closest('.pin'); if (g) waehleZelt(+g.dataset.id); });
+$('#zelt').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const g = e.target.closest('.pin'); if (g) { e.preventDefault(); waehleZelt(+g.dataset.id); } } });
+$('#zeltliste').addEventListener('click', e => { const b = e.target.closest('.eintrag'); if (b) waehleZelt(+b.dataset.id); });
+$('#zeltfilter').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { zeltFilter = b.dataset.k; zeltGew = null; zeichneZelt(); } });
+zeichneZelt();
+
 /* Caterer und Bars */
 const karte = (c, offen) => `
   <details class="karte" ${offen ? 'open' : ''}><summary><h3>${esc(c.name)}</h3></summary>
@@ -403,6 +481,9 @@ function suchIndex(){
     p.slots.forEach((s, j) => add(s.titel, `Programm · ${tag} · ${s.zeit}`, [s.text, s.ort].filter(Boolean).join(' · '), { tab: 'programm', tag: i, n: j }, p.motto));
   }
   ORTE.forEach(o => add(o.name, `Lageplan · ${KATEGORIEN[o.kat].name}`, o.info === 'Platzhalter' ? '' : o.info, { tab: 'plan', ort: o.id }));
+  const zeltStich = { wc: 'toilette klo', eingang: 'eingang ausgang', mehr: '' };
+  ZELT.forEach(o => add(o.name, `Lageplan · Festzelt · ${ZELT_KAT[o.kat].name}`, o.info, { tab: 'plan', zelt: o.id }, zeltStich[o.kat] || ''));
+  [...ZELT_TISCHE.hinten, ...ZELT_TISCHE.vorne].forEach(([n]) => add(n, 'Lageplan · Festzelt · Tischbereich', 'Im Zeltplan beschriftet', { tab: 'plan', el: '#zelt' }, 'tisch tischbereich'));
   add(ADRESSE.join(', '), 'Lageplan · Anfahrt', 'Route planen', { tab: 'plan', el: '#adresse' }, 'adresse navi route');
   ANFAHRT.forEach(([t, x], k) => add(t, 'Lageplan · Anfahrt', x, { tab: 'plan', el: `#anfahrt > .karte:nth-child(${k + 1})` }, 'anfahrt'));
   [['#caterer', CATERER, 'Essen'], ['#bars', BARS, 'Bars und Getränke']].forEach(([box, liste, bereich]) =>
@@ -472,6 +553,7 @@ function springe(z){
   document.querySelector(`nav [data-tab="${z.tab}"]`).click();
   let el;
   if (z.tab === 'programm') { aktTag = z.tag; zeichneTage(); zeichneProgramm(); el = document.querySelectorAll('#tagesinhalt .slot')[z.n]; }
+  else if (z.zelt) { zeltFilter = 'alle'; zeltGew = null; waehleZelt(z.zelt); el = document.querySelector(`#zeltliste .eintrag[data-id="${z.zelt}"]`); }
   else if (z.ort) { filter = 'alle'; gewaehlt = null; waehle(z.ort); el = document.querySelector(`#planliste .eintrag[data-id="${z.ort}"]`); }
   else if (z.karte) {
     const d = document.querySelector(z.karte); d.open = true;
