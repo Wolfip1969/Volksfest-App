@@ -103,11 +103,6 @@ const ZELT = [
   { id: 18, kat: "eingang", name: "Notausgang Ost",         info: "Nur im Notfall · rechte Zeltseite", p: [1762, 943] },
   { id: 19, kat: "eingang", name: "Notausgang Heufeld",     info: "Nur im Notfall · vorne rechts", p: [1420, 1258] }
 ];
-// Tischbereiche: Name und Position der Beschriftung (hinten = an der Rückwand, vorne = am Haupteingang)
-const ZELT_TISCHE = {
-  hinten: [["Kirchdorf", 168], ["Holzham", 300], ["Ginsham", 428], ["Hornau", 555], ["Noderwiechs", 1189], ["Sonnenwiechs", 1316], ["Högling", 1444], ["Weihenlinden", 1571]],
-  vorne:  [["Bergham", 166], ["Mittenkirchen", 299], ["Thalham", 424], ["Waith", 547], ["Feldkirchen", 683], ["Bad Aibling", 927], ["Hinrichssegen", 1060], ["Heufeldmühle", 1192], ["Waldheim", 1316], ["Götting", 1569]]
-};
 const ZELT_FLAECHEN = [[110, 650, 465, 605], [596, 1148, 113, 107], [618, 690, 512, 388], [870, 1148, 522, 107], [1183, 650, 385, 470], [1455, 1148, 56, 107]];
 
 const CATERER = [
@@ -391,9 +386,7 @@ function zeichneZelt(){
     + rect([103, 493, 1659, 765], 'rx="6" fill="none" stroke="var(--text)" stroke-width="6"')
     + `<path d="${linie([[1762, 560], [1840, 560], [1840, 300], [1810, 300]])}" fill="none" stroke="${ZELT_KAT.wc.farbe}" stroke-width="5" stroke-dasharray="14 10"/>`
     + ZELT.filter(o => o.r).map(o => rect(o.r, `rx="8" fill="${ZELT_KAT[o.kat].farbe}" fill-opacity=".18" stroke="${ZELT_KAT[o.kat].farbe}" stroke-width="3"`)).join('')
-    + (([x, y]) => `<text x="${x}" y="${y - 50}" text-anchor="middle" font-size="40" font-weight="800" fill="var(--text)" font-family="sans-serif">Bühne</text>`)(zMitte(ZELT.find(o => o.name === 'Bühne')))
-    + ZELT_TISCHE.hinten.map(([n, x]) => `<text x="715" y="${x - 10}" text-anchor="end" font-size="30" fill="var(--leise)" font-family="sans-serif">${esc(n)}</text>`).join('')
-    + ZELT_TISCHE.vorne.map(([n, x]) => `<text x="52" y="${x - 10}" font-size="30" fill="var(--leise)" font-family="sans-serif">${esc(n)}</text>`).join('');
+    + (([x, y]) => `<text x="${x}" y="${y - 50}" text-anchor="middle" font-size="40" font-weight="800" fill="var(--text)" font-family="sans-serif">Bühne</text>`)(zMitte(ZELT.find(o => o.name === 'Bühne')));
   const pins = sichtbar.map(o => {
     const k = ZELT_KAT[o.kat], an = zeltGew === o.id, [x, y] = zMitte(o);
     return `<g class="pin" data-id="${o.id}" tabindex="0" role="button" aria-label="${esc(o.name)}">
@@ -483,7 +476,6 @@ function suchIndex(){
   ORTE.forEach(o => add(o.name, `Lageplan · ${KATEGORIEN[o.kat].name}`, o.info === 'Platzhalter' ? '' : o.info, { tab: 'plan', ort: o.id }));
   const zeltStich = { wc: 'toilette klo', eingang: 'eingang ausgang', mehr: '' };
   ZELT.forEach(o => add(o.name, `Lageplan · Festzelt · ${ZELT_KAT[o.kat].name}`, o.info, { tab: 'plan', zelt: o.id }, zeltStich[o.kat] || ''));
-  [...ZELT_TISCHE.hinten, ...ZELT_TISCHE.vorne].forEach(([n]) => add(n, 'Lageplan · Festzelt · Tischbereich', 'Im Zeltplan beschriftet', { tab: 'plan', el: '#zelt' }, 'tisch tischbereich'));
   add(ADRESSE.join(', '), 'Lageplan · Anfahrt', 'Route planen', { tab: 'plan', el: '#adresse' }, 'adresse navi route');
   ANFAHRT.forEach(([t, x], k) => add(t, 'Lageplan · Anfahrt', x, { tab: 'plan', el: `#anfahrt > .karte:nth-child(${k + 1})` }, 'anfahrt'));
   [['#caterer', CATERER, 'Essen'], ['#bars', BARS, 'Bars und Getränke']].forEach(([box, liste, bereich]) =>
