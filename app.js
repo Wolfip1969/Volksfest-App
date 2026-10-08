@@ -57,21 +57,33 @@ const PROGRAMM = {
 };
 
 const KATEGORIEN = {
-  zelt:   { name: "Bierzelt",       farbe: "#d2332e" },
-  fahr:   { name: "Fahrgeschäfte",  farbe: "#141414" },
-  essen:  { name: "Essen",          farbe: "#8a8a8a" },
-  buehne: { name: "Bühne",          farbe: "#8f1d19" }
+  zelt:    { name: "Festzelt",          farbe: "#d2332e" },
+  fahr:    { name: "Fahrgeschäfte",     farbe: "#6a3fa0" },
+  essen:   { name: "Essen und Süßes",   farbe: "#8a8a8a" },
+  buden:   { name: "Buden",             farbe: "#c27c0e" },
+  eingang: { name: "Eingänge",          farbe: "#2e7d32" },
+  wc:      { name: "Toiletten",         farbe: "#1f6fb2" }
 };
 
-// x,y = Position im schematischen Plan (400 x 300)
+// FESTPLATZ: schematisch nach dem Rundgang-Video 2026 (U-Weg vom Rathausplatz um den Biergarten).
+// r = Fläche [x, y, Breite, Höhe] im Plan 400 x 300, oben = Festzelt, unten = Rathausplatz.
 const ORTE = [
-  { id: 1, kat: "zelt",   name: "Bierzelt",                 info: "Platzhalter", x: 120, y: 110 },
-  { id: 2, kat: "buehne", name: "Bühne",                    info: "Platzhalter", x: 120, y: 190 },
-  { id: 3, kat: "fahr",   name: "Fahrgeschäft A",           info: "Platzhalter", x: 290, y: 70 },
-  { id: 4, kat: "fahr",   name: "Fahrgeschäft B",           info: "Platzhalter", x: 340, y: 140 },
-  { id: 5, kat: "essen",  name: "Imbiss A",                 info: "Platzhalter", x: 260, y: 215 },
-  { id: 6, kat: "essen",  name: "Imbiss B",                 info: "Platzhalter", x: 320, y: 250 }
-];
+  { id: 1,  kat: "zelt",    name: "Festzelt",                     info: "Haupteingang zum Biergarten hin", r: [20, 22, 260, 56] },
+  { id: 2,  kat: "zelt",    name: "Biergarten",                   info: "Vor dem Haupteingang, zwischen den beiden Gassen", r: [102, 100, 96, 110] },
+  { id: 3,  kat: "fahr",    name: "Autoscooter",                  info: "Mitte, unter dem Biergarten", r: [102, 216, 96, 110] },
+  { id: 4,  kat: "fahr",    name: "Kinderkarussell",              info: "Mitte, unter dem Autoscooter", r: [102, 332, 96, 108] },
+  { id: 5,  kat: "eingang", name: "Eingang links",                info: "Vom Rathausplatz, Gasse direkt zum Haupteingang", r: [74, 446, 24, 12] },
+  { id: 6,  kat: "eingang", name: "Eingang rechts",               info: "Vom Rathausplatz, am Break Dance vorbei", r: [202, 446, 24, 12] },
+  { id: 7,  kat: "buden",   name: "Losbude Rotes Kreuz",          info: "Linke Gasse, gleich am Eingang", r: [20, 376, 50, 64] },
+  { id: 8,  kat: "fahr",    name: "Kettenkarussell",              info: "Linke Gasse, links", r: [20, 304, 50, 66] },
+  { id: 9,  kat: "buden",   name: "Bude",                         info: "Linke Gasse, links", r: [20, 238, 50, 60] },
+  { id: 10, kat: "buden",   name: "Bude",                         info: "Linke Gasse, links", r: [20, 172, 50, 60] },
+  { id: 11, kat: "buden",   name: "Torwand",                      info: "Linke Gasse, links, kurz vor dem Zelt", r: [20, 100, 50, 66] },
+  { id: 12, kat: "essen",   name: "Streini's Fischspezialitäten", info: "Steckerlfisch · rechte Gasse, gleich beim Zelt", r: [230, 100, 50, 70] },
+  { id: 13, kat: "buden",   name: "Buden",                        info: "Rechte Gasse, rechts", r: [230, 176, 50, 124] },
+  { id: 14, kat: "fahr",    name: "Break Dance",                  info: "Rechte Gasse, rechts am Ausgang", r: [230, 306, 50, 134] },
+  { id: 15, kat: "wc",      name: "Toiletten",                    info: "Hinter dem Festzelt rechts, Zugang über den Ausgang Toilette im Zelt", r: [238, 4, 42, 14] }
+].map(o => ({ ...o, x: o.r[0] + o.r[2] / 2, y: o.r[1] + o.r[3] / 2 }));
 
 // FESTZELT: nach Zeltplan 2024. Koordinaten in Plan-Einheiten (Zeltplan quer, Haupteingang unten);
 // r = Fläche [x, y, Breite, Höhe], p = Punkt [x, y]. Die App dreht den Plan hochkant.
@@ -102,7 +114,7 @@ const ZELT = [
   { id: 17, kat: "eingang", name: "Notausgang West",        info: "Nur im Notfall · linke Zeltseite", p: [103, 915] },
   { id: 18, kat: "eingang", name: "Notausgang Ost",         info: "Nur im Notfall · rechte Zeltseite", p: [1762, 943] },
   { id: 19, kat: "eingang", name: "Notausgang Süd",         info: "Nur im Notfall · vorne rechts", p: [1420, 1258] },
-  { id: 20, kat: "essen",   name: "Streini's Fischspezialitäten", info: "Steckerlfisch, Backfisch · außerhalb des Zelts, vorne rechts vom Haupteingang", r: [1250, 1285, 140, 70] }
+  { id: 20, kat: "essen",   name: "Streini's Fischspezialitäten", info: "Steckerlfisch, Backfisch · außerhalb des Zelts, vorne rechts vom Haupteingang", r: [1230, 1285, 140, 70] }
 ];
 const ZELT_FLAECHEN = [[110, 650, 465, 605], [596, 1148, 113, 107], [618, 690, 512, 388], [870, 1148, 522, 107], [1183, 650, 385, 470], [1455, 1148, 56, 107]];
 
@@ -343,13 +355,12 @@ let filter = 'alle', gewaehlt = null;
 function zeichnePlan(){
   const sichtbar = ORTE.filter(o => filter === 'alle' || o.kat === filter);
   const flaechen = `
-    <rect x="8" y="8" width="384" height="284" rx="14" fill="none" stroke="var(--linie)" stroke-width="2" stroke-dasharray="6 6"/>
-    <rect x="50" y="70" width="150" height="80" rx="8" fill="${KATEGORIEN.zelt.farbe}" opacity=".12"/>
-    <rect x="50" y="165" width="150" height="55" rx="8" fill="${KATEGORIEN.buehne.farbe}" opacity=".12"/>
-    <rect x="240" y="40" width="130" height="130" rx="8" fill="${KATEGORIEN.fahr.farbe}" opacity=".12"/>
-    <rect x="230" y="190" width="140" height="80" rx="8" fill="${KATEGORIEN.essen.farbe}" opacity=".12"/>
-    <path d="M30 280h50" stroke="var(--leise)" stroke-width="3"/>
-    <text x="85" y="284" font-size="11" fill="var(--leise)" font-family="sans-serif">Eingang (Platzhalter)</text>`;
+    <path d="M86 470V89H214V470" fill="none" stroke="var(--linie)" stroke-width="24" stroke-linejoin="round"/>
+    ${ORTE.map(o => `<rect x="${o.r[0]}" y="${o.r[1]}" width="${o.r[2]}" height="${o.r[3]}" rx="5" fill="${KATEGORIEN[o.kat].farbe}" fill-opacity=".16" stroke="${KATEGORIEN[o.kat].farbe}" stroke-opacity=".5"/>`).join('')}
+    <text x="150" y="40" text-anchor="middle" font-size="12" font-weight="800" fill="var(--text)" font-family="sans-serif">Festzelt</text>
+    <text x="150" y="114" text-anchor="middle" font-size="10" font-weight="700" fill="var(--text)" font-family="sans-serif">Biergarten</text>
+    <text x="150" y="466" text-anchor="middle" font-size="10" font-weight="700" fill="var(--leise)" font-family="sans-serif">Rathausplatz</text>
+    <text x="129" y="92" text-anchor="middle" font-size="8" font-weight="700" fill="var(--leise)" font-family="sans-serif">▲ Haupteingang</text>`;
   const pins = sichtbar.map(o => {
     const k = KATEGORIEN[o.kat], an = gewaehlt === o.id;
     return `<g class="pin" data-id="${o.id}" tabindex="0" role="button" aria-label="${esc(o.name)}">
@@ -365,7 +376,7 @@ function zeichnePlan(){
     const k = KATEGORIEN[o.kat];
     return `<li><button class="eintrag" data-id="${o.id}" ${gewaehlt === o.id ? 'aria-current="true"' : ''}>
       <span class="nr" style="background:${k.farbe}">${o.id}</span>
-      <span><b>${esc(o.name)}</b><small>${k.name} · ${esc(o.info)}</small></span></button></li>`;
+      <span><b>${esc(o.name)}</b><small>${esc(o.info)}</small></span></button></li>`;
   }).join('') || '<li class="leer">Keine Einträge.</li>';
 }
 function waehle(id){ gewaehlt = gewaehlt === id ? null : id; zeichnePlan(); }
@@ -374,9 +385,9 @@ $('#plan').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key ===
 $('#planliste').addEventListener('click', e => { const b = e.target.closest('.eintrag'); if (b) waehle(+b.dataset.id); });
 $('#planfilter').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { filter = b.dataset.k; gewaehlt = null; zeichnePlan(); } });
 
-/* Festzelt: Plan quer gezeichnet, im Uhrzeigersinn hochkant gedreht */
-const ZT = (x, y) => [1380 - y, x - 20];
-const zRect = ([x, y, w, h]) => { const [nx, ny] = ZT(x, y + h); return [nx, ny, h, w]; };
+/* Festzelt: Lage wie im Zeltplan, Haupteingang unten */
+const ZT = (x, y) => [x - 20, y - 230];
+const zRect = ([x, y, w, h]) => [...ZT(x, y), w, h];
 const zMitte = o => o.p ? ZT(...o.p) : (([x, y, w, h]) => [x + w / 2, y + h / 2])(zRect(o.r));
 let zeltFilter = 'alle', zeltGew = null;
 function zeichneZelt(){
@@ -387,12 +398,12 @@ function zeichneZelt(){
     + rect([103, 493, 1659, 765], 'rx="6" fill="none" stroke="var(--text)" stroke-width="6"')
     + `<path d="${linie([[1762, 560], [1840, 560], [1840, 300], [1810, 300]])}" fill="none" stroke="${ZELT_KAT.wc.farbe}" stroke-width="5" stroke-dasharray="14 10"/>`
     + ZELT.filter(o => o.r).map(o => rect(o.r, `rx="8" fill="${ZELT_KAT[o.kat].farbe}" fill-opacity=".18" stroke="${ZELT_KAT[o.kat].farbe}" stroke-width="3"`)).join('')
-    + (([x, y]) => `<text x="${x}" y="${y - 50}" text-anchor="middle" font-size="40" font-weight="800" fill="var(--text)" font-family="sans-serif">Bühne</text>`)(zMitte(ZELT.find(o => o.name === 'Bühne')));
+    + (([x, y]) => `<text x="${x}" y="${y - 72}" text-anchor="middle" font-size="58" font-weight="800" fill="var(--text)" font-family="sans-serif">Bühne</text>`)(zMitte(ZELT.find(o => o.name === 'Bühne')));
   const pins = sichtbar.map(o => {
     const k = ZELT_KAT[o.kat], an = zeltGew === o.id, [x, y] = zMitte(o);
     return `<g class="pin" data-id="${o.id}" tabindex="0" role="button" aria-label="${esc(o.name)}">
-      <circle cx="${x}" cy="${y}" r="${an ? 48 : 36}" fill="${k.farbe}" stroke="${an ? 'var(--blau)' : '#fff'}" stroke-width="${an ? 10 : 5}"/>
-      <text x="${x}" y="${y + 13}" text-anchor="middle" font-size="36" font-weight="800" fill="#fff" font-family="sans-serif">${o.id}</text></g>`;
+      <circle cx="${x}" cy="${y}" r="${an ? 70 : 56}" fill="${k.farbe}" stroke="${an ? 'var(--blau)' : '#fff'}" stroke-width="${an ? 12 : 7}"/>
+      <text x="${x}" y="${y + 19}" text-anchor="middle" font-size="54" font-weight="800" fill="#fff" font-family="sans-serif">${o.id}</text></g>`;
   }).join('');
   $('#zelt').innerHTML = grund + pins;
 
