@@ -84,16 +84,16 @@ const ZELT_KAT = {
 };
 const ZELT = [
   { id: 1,  kat: "eingang", name: "Haupteingang",           info: "Gegenüber der Bühne", p: [803, 1258] },
-  { id: 2,  kat: "eingang", name: "Eingang Nord-West",      info: "Hinten links, zwischen Hendl und Metzger", p: [553, 493] },
-  { id: 3,  kat: "eingang", name: "Eingang Nord-Ost",       info: "Hinten rechts, neben der Schnapsbar", p: [1320, 493] },
+  { id: 2,  kat: "eingang", name: "Eingang Nord-West",      info: "Hinten links, zwischen Hainz Peter und Sigl", p: [553, 493] },
+  { id: 3,  kat: "eingang", name: "Eingang Nord-Ost",       info: "Hinten rechts, neben der Schnaps- und Cocktailbar", p: [1320, 493] },
   { id: 4,  kat: "bar",     name: "Pils- und Weißbier-Bar", info: "SVB-Handballer · rechte Zeltseite, nahe Haupteingang", r: [1632, 1007, 128, 250] },
   { id: 5,  kat: "bar",     name: "Weinbar",                info: "Rechte Zeltseite, auf Höhe der Bühne", r: [1635, 627, 127, 257] },
   { id: 6,  kat: "bar",     name: "Kaffeebar",              info: "SVB-Leichtathleten · hinten rechts", r: [1473, 493, 162, 78] },
   { id: 7,  kat: "bar",     name: "Alkoholfreie Bar",       info: "SVB-Stockschützen · hinter der Bühne, rechts neben der Kasse", r: [1128, 493, 127, 85] },
-  { id: 8,  kat: "bar",     name: "Schnapsbar",             info: "Außen am Eingang Nord-Ost", r: [1383, 433, 128, 60] },
-  { id: 9,  kat: "essen",   name: "Käse und Radi",          info: "SVB-Volleyballer · hinten links", r: [233, 493, 128, 80] },
-  { id: 10, kat: "essen",   name: "Hendl",                  info: "Hinten links", r: [361, 493, 127, 80] },
-  { id: 11, kat: "essen",   name: "Metzger",                info: "Hinter der Bühne, links", r: [616, 493, 122, 80] },
+  { id: 8,  kat: "bar",     name: "Schnaps- und Cocktailbar", info: "Außen am Eingang Nord-Ost", r: [1383, 433, 128, 60] },
+  { id: 9,  kat: "essen",   name: "SVB Volleyballer-Brotzeiten", info: "Brezn, Käse, Radi, Obazda · hinten links", r: [233, 493, 128, 80] },
+  { id: 10, kat: "essen",   name: "Hainz Peter",            info: "Hendl und Haxn · hinten links", r: [361, 493, 127, 80] },
+  { id: 11, kat: "essen",   name: "Catering mit Sigl",       info: "Warme Gerichte, Brotzeit · hinter der Bühne, links", r: [616, 493, 122, 80] },
   { id: 12, kat: "wc",      name: "Toiletten",              info: "Außerhalb des Zelts, über den Ausgang Toilette", r: [1600, 240, 210, 110] },
   { id: 13, kat: "wc",      name: "Ausgang Toilette",       info: "Rechte Zeltseite hinten, durch den Raucherbereich", p: [1762, 560] },
   { id: 14, kat: "mehr",    name: "Bühne",                  info: "Mit Kränzen und SVB-Fahnen", r: [776, 677, 229, 130] },
@@ -101,12 +101,13 @@ const ZELT = [
   { id: 16, kat: "mehr",    name: "Raucherbereich",         info: "Außen entlang der rechten Zeltseite", r: [1762, 360, 128, 898] },
   { id: 17, kat: "eingang", name: "Notausgang West",        info: "Nur im Notfall · linke Zeltseite", p: [103, 915] },
   { id: 18, kat: "eingang", name: "Notausgang Ost",         info: "Nur im Notfall · rechte Zeltseite", p: [1762, 943] },
-  { id: 19, kat: "eingang", name: "Notausgang Heufeld",     info: "Nur im Notfall · vorne rechts", p: [1420, 1258] }
+  { id: 19, kat: "eingang", name: "Notausgang Süd",         info: "Nur im Notfall · vorne rechts", p: [1420, 1258] },
+  { id: 20, kat: "essen",   name: "Streini's Fischspezialitäten", info: "Steckerlfisch, Backfisch · außerhalb des Zelts, vorne rechts vom Haupteingang", r: [1250, 1285, 140, 70] }
 ];
 const ZELT_FLAECHEN = [[110, 650, 465, 605], [596, 1148, 113, 107], [618, 690, 512, 388], [870, 1148, 522, 107], [1183, 650, 385, 470], [1455, 1148, 56, 107]];
 
 const CATERER = [
-  { name: "SVB Volleyballer-Brotzeiten", gruppen: [{ items: [
+  { name: "SVB Volleyballer-Brotzeiten", info: "Im Festzelt, hinten links", gruppen: [{ items: [
       ["Große Brezn", "5,00", "1"],
       ["Bierstangerl", "3,80", "3"],
       ["Pizzaschifferl", "4,40", "1, 3", "Margherita"],
@@ -117,11 +118,11 @@ const CATERER = [
       ["Obazda", "10,00", "3"] ]}],
     fuss: "1) Gluten, Weizen. 2) Roggen, Sesam, Sesamsamen. 3) Milch und Milcherzeugnisse." },
 
-  { name: "Hainz Peter", gruppen: [{ items: [
+  { name: "Hainz Peter", info: "Im Festzelt, hinten links", gruppen: [{ items: [
       ["1/2 Hendl mit Semmel", "13,30"],
       ["Haxn mit Semmel", "13,30"] ]}] },
 
-  { name: "Streini's Fischspezialitäten", gruppen: [{ items: [
+  { name: "Streini's Fischspezialitäten", info: "Außerhalb des Zelts, rechts vom Haupteingang", gruppen: [{ items: [
       ["Steckerlfisch mit Semmel", "18,00"],
       ["Seelachs-Filet mit Kartoffelsalat", "15,50"],
       ["Backfisch mit Kartoffelsalat", "11,00", "1"],
@@ -137,7 +138,7 @@ const CATERER = [
       ["Gemischter Salat mit Garnelen", "11,60"] ]}],
     fuss: "1) Geschmacksverstärker 2) E451 3) Süßungsmittel 4) Phosphat. Informationen über Zutaten, die Allergien oder Unverträglichkeiten auslösen können, gibt es auf Nachfrage am Stand." },
 
-  { name: "Catering mit Sigl", gruppen: [
+  { name: "Catering mit Sigl", info: "Im Festzelt, hinter der Bühne links", gruppen: [
     { items: [
       ["Rollbraten mit Dunkelbiersoße, Kartoffel- und Krautsalat", "15,40", "a d e"],
       ["Leberkäs mit Kartoffelsalat", "11,00", "d e 2 3 7"],
@@ -166,7 +167,7 @@ const CATERER = [
 ];
 
 // BARS: Betreiber laut Berichten auf svbruckmuehl.de. Preise sind BEISPIELE, nur die Maß (12,60 €, Stand 2026) ist echt.
-const BARS_INTRO = "Neben dem Festzelt betreiben die Sparten des SV Bruckmühl fünf Bars, dazu kommt die Kaffeebar. Die Getränkeliste ist noch ein Beispiel, die echten Preise für 2027 folgen.";
+const BARS_INTRO = "Neben dem Ausschank im Festzelt betreiben die Sparten des SV Bruckmühl ihre Bars, von der Kaffeebar bis zur Schnaps- und Cocktailbar. Die Getränkeliste ist noch ein Beispiel, die echten Preise für 2027 folgen.";
 const BARS = [
   { name: "Ausschank im Festzelt", info: "Maxlrainer Festbier, frisch vom Fass", gruppen: [{ items: [
       ["Maß Festbier", "12,60", "", "Preis 2026"],
@@ -194,15 +195,14 @@ const BARS = [
       ["Flasche Sekt", "29,00", "", "0,75 l"] ]}
   ]},
 
-  { name: "Schnapsbar", info: "Ab dem Abend · je 2 cl", gruppen: [{ items: [
+  { name: "Schnaps- und Cocktailbar", info: "Ab dem Abend · außen am Eingang Nord-Ost", gruppen: [
+    { titel: "Schnaps", sub: "Je 2 cl", items: [
       ["Obstler", "3,50"],
       ["Williamsbirne", "4,00"],
       ["Enzian", "4,00"],
       ["Kräuterlikör", "3,50"],
-      ["Haselnuss", "3,50"] ]}] },
-
-  { name: "Cocktailbar", info: "Ab dem Abend", gruppen: [
-    { items: [
+      ["Haselnuss", "3,50"] ]},
+    { titel: "Cocktails", items: [
       ["Caipirinha", "10,00"],
       ["Mojito", "10,00"],
       ["Gin Tonic", "10,00"],
@@ -265,6 +265,7 @@ const SUCHWOERTER = {
   "kinder": "kids", "kind": "kids",
   "musik": "musi", "band": "musi", "kapelle": "musi",
   "vegetarisch": "vegan", "veggie": "vegan",
+  "metzger": "sigl", "metzgerei": "sigl", "hendl": "hendl", "haxn": "haxn",
   "adresse": "volksfestplatz", "anfahrt": "anfahrt", "navi": "route"
 };
 
@@ -374,7 +375,7 @@ $('#planliste').addEventListener('click', e => { const b = e.target.closest('.ei
 $('#planfilter').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { filter = b.dataset.k; gewaehlt = null; zeichnePlan(); } });
 
 /* Festzelt: Plan quer gezeichnet, im Uhrzeigersinn hochkant gedreht */
-const ZT = (x, y) => [1300 - y, x - 20];
+const ZT = (x, y) => [1380 - y, x - 20];
 const zRect = ([x, y, w, h]) => { const [nx, ny] = ZT(x, y + h); return [nx, ny, h, w]; };
 const zMitte = o => o.p ? ZT(...o.p) : (([x, y, w, h]) => [x + w / 2, y + h / 2])(zRect(o.r));
 let zeltFilter = 'alle', zeltGew = null;
