@@ -158,6 +158,19 @@ details.info.karte{padding:0}
 
 
 
+/* Jetzt, Meldungen, Heimweg */
+.meldungen{margin:10px 16px 0}
+.meldung{margin:0 0 8px;padding:12px 14px;border-radius:12px;background:var(--karte);border:1px solid var(--linie);border-left:6px solid var(--blau);font-weight:600}
+.meldung.wichtig{background:var(--blau);border-color:var(--blau);color:#fff}
+.jetzt{background:var(--karte);border:1px solid var(--linie);border-radius:14px;margin:0 0 14px;overflow:hidden}
+.jetzt button{display:block;width:100%;text-align:left;background:none;border:0;padding:12px 16px;border-top:1px solid var(--linie)}
+.jetzt button:first-child{border-top:0}
+.jetzt .label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--titel)}
+.jetzt b{display:block;font-size:17px}
+.jetzt small{color:var(--leise);font-size:14px}
+.notruf{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 0 6px;background:var(--blau);color:#fff;font-weight:800;font-size:18px;padding:14px;border-radius:12px;text-decoration:none}
+.heimweg a:not(.notruf){color:var(--titel);font-weight:700}
+
 /* Suche */
 .kopf-rechts{display:flex;gap:18px;align-items:center}
 .suche-knopf{background:none;border:0;padding:0;color:#fff;line-height:0}
@@ -201,6 +214,7 @@ nav button[aria-selected="true"]{color:var(--titel)}
   </svg>
 </header>
 
+<div class="meldungen" id="meldungen" role="status" hidden></div>
 <div class="hinweis" id="hinweis" hidden>Testversion: Programm und Speisekarte stammen vom Vorjahr, alles andere sind Platzhalter.</div>
 
 
@@ -216,6 +230,7 @@ nav button[aria-selected="true"]{color:var(--titel)}
 <main>
   <section id="tab-programm" role="tabpanel">
     <h2 class="titel">Programm</h2>
+    <div class="jetzt" id="jetzt" hidden></div>
     <div class="tage" id="tage" role="group" aria-label="Festtag wählen"></div>
     <div id="tagesinhalt"></div>
   </section>

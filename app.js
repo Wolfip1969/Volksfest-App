@@ -5,6 +5,8 @@
 const FEST_START = new Date(2027, 6, 9);   // 9. Juli 2027
 const FEST_TAGE  = 10;                      // bis 18. Juli
 
+// Programmpunkte: zeit "18:00" oder ein Wort ("Abends", "Danach"). Bei Wörtern kann ca: "22:00" die ungefähre Uhrzeit
+// angeben, bis: "22:20" das Ende. Beides nutzt die Anzeige "Läuft gerade / Als Nächstes"; "Danach" ohne ca = 1 Std. nach dem Punkt davor.
 const PROGRAMM = {
   // TESTDATEN: Festprogramm vom Vorjahr (Fr 10.7. bis So 19.7.2026), auf 9.-18.7.2027 gelegt.
   0: { motto: "Festeinzug", slots: [
@@ -29,7 +31,7 @@ const PROGRAMM = {
   4: { motto: "Brillantfeuerwerk", slots: [
       { zeit: "17:00", titel: "Festzeltbetrieb und Bierausschank", text: "", ort: "Festzelt" },
       { zeit: "19:00", titel: "Festabend mit der Harthauser Musi", text: "", ort: "Festzelt" },
-      { zeit: "Abends", titel: "Großes Brillantfeuerwerk", text: "Nach Einbruch der Dunkelheit", ort: "Festplatz", highlight: true } ]},
+      { zeit: "Abends", ca: "22:00", bis: "22:20", titel: "Großes Brillantfeuerwerk", text: "Nach Einbruch der Dunkelheit", ort: "Festplatz", highlight: true } ]},
   5: { motto: "Senioren- und Kindernachmittag", slots: [
       { zeit: "14:00", titel: "Tag der Kinder", text: "Zu ermäßigten Preisen, bis 18:00 Uhr", ort: "Festplatz", highlight: true },
       { zeit: "14:00", titel: "Bewirtung der Bruckmühler Altbürger", text: "Zeichenausgabe ab dem 65. Lebensjahr von 13:30 bis 16:00 Uhr", ort: "Festzelt" },
@@ -281,6 +283,11 @@ const SUCHWOERTER = {
   "adresse": "volksfestplatz", "anfahrt": "anfahrt", "navi": "route"
 };
 
+// HEIMWEG: Taxi-Nummern als ["Name", "Telefonnummer"] eintragen, solange leer steht "Nummern folgen".
+const TAXI = [];
+const BAHN_URL = "https://www.bahn.de/buchung/abfahrten-ankuenfte";
+const BRB_URL = "https://www.brb.de/";
+
 const INFOS = [
   { titel: "Bezahlen und Bierzeichen", punkte: [
     ["Bierzeichen", "Gibt es an der Volksfestkasse. Mindestabnahme: 10 Stück."],
@@ -320,9 +327,19 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 })();
 
 /* Programm */
+// Uhrzeit der App; zum Testen mit ?jetzt=2027-07-13T19:30 in der Adresse überschreibbar
+function jetztZeit(){
+  const q = new URLSearchParams(location.search).get('jetzt');
+  const d = q ? new Date(q) : new Date();
+  return isNaN(d) ? new Date() : d;
+}
+// Ein Festtag geht bis 4 Uhr früh, die Nacht zählt noch zum Vortag
+function festTag(){
+  const t = new Date(jetztZeit().getTime() - 4 * 36e5);
+  return Math.round((new Date(t.getFullYear(), t.getMonth(), t.getDate()) - FEST_START) / 864e5);
+}
 let aktTag = (function(){
-  const heute = new Date(); heute.setHours(0,0,0,0);
-  const d = Math.round((heute - FEST_START) / 864e5);
+  const d = festTag();
   return d >= 0 && d < FEST_TAGE ? d : 0;
 })();
 
@@ -444,7 +461,11 @@ $('#anfahrt').innerHTML = ANFAHRT.map(([t, x]) => `<div class="karte"><h3>${esc(
 /* Infos */
 $('#zeiten').innerHTML = ZEITEN.map(([t, z]) => `<tr><td>${esc(t)}</td><td>${esc(z)}</td></tr>`).join('');
 const infoKarte = (titel, inhalt, extra = '') => `<details class="info karte"><summary><h3>${esc(titel)}</h3></summary><div class="menue ${extra}">${inhalt}</div></details>`;
-$('#infos').innerHTML = (RESERVIERUNG_URL ? infoKarte('Tischreservierung', `<p>Reserviere deinen Tisch im Bierzelt online. Du bekommst eine Bestätigung per E-Mail. Reservierungen gelten nur bis 18:30 Uhr.</p><a class="knopf" href="${esc(RESERVIERUNG_URL)}" target="_blank" rel="noopener">Tisch reservieren</a>`) : '')
+const heimweg = `<a class="notruf" href="tel:112">Notruf 112</a>
+  <p class="punkt"><b>Erste Hilfe</b> BRK-Rettungswagen am Haupteingang, kleinere Verletzungen an der Kasse im Festzelt.</p>
+  <p class="punkt"><b>Mit dem Zug</b> Vom Bahnhof Bruckmühl fährt die BRB Richtung Holzkirchen/München und Rosenheim. Die letzten Züge findest du in der <a href="${esc(BAHN_URL)}" target="_blank" rel="noopener">Abfahrtstafel von bahn.de</a> (Bruckmühl eingeben) oder bei der <a href="${esc(BRB_URL)}" target="_blank" rel="noopener">BRB</a>.</p>
+  <p class="punkt"><b>Taxi</b> ${TAXI.length ? TAXI.map(([n, t]) => `${esc(n)}: <a href="tel:${esc(t.replace(/[^0-9+]/g, ''))}">${esc(t)}</a>`).join(' · ') : 'Nummern folgen.'}</p>`;
+$('#infos').innerHTML = infoKarte('Heimweg und Notfall', heimweg, 'heimweg') + (RESERVIERUNG_URL ? infoKarte('Tischreservierung', `<p>Reserviere deinen Tisch im Bierzelt online. Du bekommst eine Bestätigung per E-Mail. Reservierungen gelten nur bis 18:30 Uhr.</p><a class="knopf" href="${esc(RESERVIERUNG_URL)}" target="_blank" rel="noopener">Tisch reservieren</a>`) : '')
   + infoKarte('Folge uns', LINKS.map(l => `<a class="linkzeile" href="${esc(l.url)}" target="_blank" rel="noopener"><span><b>${esc(l.name)}</b><small>${esc(l.text)}</small></span></a>`).join(''))
   + INFOS.map(i => infoKarte(i.titel, i.punkte ? i.punkte.map(([l, t]) => `<p class="punkt"><b>${esc(l)}</b> ${esc(t)}</p>`).join('') : `<p>${esc(i.text)}</p>`)).join('')
   + infoKarte('Veranstalter', `<img src="${LOGO_SRC}" alt=""><div><p>SV Bruckmühl e.V.</p><p><a href="https://svbruckmuehl.de/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://svbruckmuehl.de/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></p></div>`, 'veranstalter');
@@ -501,6 +522,7 @@ function suchIndex(){
   const infoKarten = [...document.querySelectorAll('#infos > details')];
   const titelZuKarte = t => infoKarten.findIndex(d => d.querySelector('h3').textContent === t);
   if (RESERVIERUNG_URL) add('Tischreservierung', 'Infos', 'Tisch im Bierzelt online reservieren', { tab: 'infos', karte: `#infos > details:nth-child(${titelZuKarte('Tischreservierung') + 1})` }, 'reservieren');
+  add('Heimweg und Notfall', 'Infos', 'Notruf 112, Zug, Taxi', { tab: 'infos', karte: `#infos > details:nth-child(${titelZuKarte('Heimweg und Notfall') + 1})` }, 'notruf 112 notfall taxi zug heimfahrt heimweg letzter zug');
   INFOS.forEach(i => {
     const sel = `#infos > details:nth-child(${titelZuKarte(i.titel) + 1})`;
     if (i.punkte) i.punkte.forEach(([l, t], k) => add(l, `Infos · ${i.titel}`, t, { tab: 'infos', karte: sel, punkt: k }));
@@ -584,3 +606,59 @@ $('#treffer').addEventListener('click', e => {
   sucheZu();
   setTimeout(() => springe(z), 50);
 });
+
+
+/* Jetzt läuft / Als Nächstes */
+const minuten = z => { const m = /^(\d{1,2}):(\d{2})$/.exec(z); return m ? +m[1] * 60 + +m[2] : null; };
+const dauer = d => d < 60 ? `in ${d} Min.` : `in ${Math.floor(d / 60)} Std.${d % 60 ? ` ${d % 60} Min.` : ''}`;
+function zeichneJetzt(){
+  const box = $('#jetzt'), tag = festTag();
+  if (tag < 0 || tag >= FEST_TAGE) { box.hidden = true; return; }
+  const n = jetztZeit(), jetzt = (n.getHours() < 4 ? n.getHours() + 24 : n.getHours()) * 60 + n.getMinutes();
+  const slots = (PROGRAMM[tag] || { slots: [] }).slots;
+  // Beginn jedes Punkts in Minuten (Nacht nach 24 Uhr weitergezählt), Wort-Zeiten über ca bzw. "Danach"
+  const nacht = m => m != null && m < 4 * 60 ? m + 24 * 60 : m;
+  const start = [];
+  slots.forEach((s, j) => start.push(nacht(minuten(s.zeit) ?? minuten(s.ca || '')) ?? (j ? start[j - 1] + 60 : null)));
+  let lauf = -1, naechst = -1;
+  slots.forEach((s, j) => {
+    if (start[j] == null) return;
+    if (start[j] <= jetzt && !(s.bis && nacht(minuten(s.bis)) <= jetzt)) lauf = j;
+    if (start[j] > jetzt && naechst < 0) naechst = j;
+  });
+  const zeile = (label, s, wann, ziel) => `<button data-tag="${ziel[0]}" data-n="${ziel[1]}"><span class="label">${label}</span><b>${esc(s.titel)}</b><small>${esc([wann, s.ort].filter(Boolean).join(' · '))}</small></button>`;
+  let html = '';
+  const wann = (s, j, seit) => minuten(s.zeit) != null ? (seit ? `seit ${s.zeit}` : s.zeit) : s.ca ? `${s.zeit}, ca. ${s.ca}` : s.zeit;
+  if (lauf >= 0) html += zeile('Läuft gerade', slots[lauf], wann(slots[lauf], lauf, true), [tag, lauf]);
+  if (naechst >= 0) {
+    html += zeile(lauf < 0 && naechst === 0 ? 'Heute' : 'Als Nächstes', slots[naechst], `${wann(slots[naechst], naechst)} · ${dauer(start[naechst] - jetzt)}`, [tag, naechst]);
+  } else if (tag + 1 < FEST_TAGE && PROGRAMM[tag + 1] && PROGRAMM[tag + 1].slots.length) {
+    const s = PROGRAMM[tag + 1].slots[0], d = tageAb(tag + 1);
+    html += zeile('Morgen', s, `${wt[d.getDay()]}, ${s.zeit}`, [tag + 1, 0]);
+  }
+  if (n.getHours() >= 21 || n.getHours() < 4) html += `<button data-heimweg="1"><span class="label">Heimweg</span><b>Letzte Züge, Taxi, Notruf</b></button>`;
+  box.innerHTML = html;
+  box.hidden = !html;
+}
+$('#jetzt').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.heimweg) springe({ tab: 'infos', karte: `#infos > details:nth-child(1)` });
+  else springe({ tab: 'programm', tag: +b.dataset.tag, n: +b.dataset.n });
+});
+zeichneJetzt();
+setInterval(zeichneJetzt, 60000);
+
+/* Aktuelle Meldungen aus meldungen.json (ohne Neuveröffentlichung der App änderbar) */
+async function ladeMeldungen(){
+  try {
+    const r = await fetch('meldungen.json', { cache: 'no-store' });
+    if (!r.ok) return;
+    const jetzt = jetztZeit();
+    const aktiv = (await r.json()).filter(m => m && m.text && (!m.ab || new Date(m.ab) <= jetzt) && (!m.bis || new Date(m.bis) > jetzt));
+    $('#meldungen').innerHTML = aktiv.map(m => `<p class="meldung${m.wichtig ? ' wichtig' : ''}">${esc(m.text)}</p>`).join('');
+    $('#meldungen').hidden = !aktiv.length;
+  } catch (e) {}
+}
+ladeMeldungen();
+setInterval(ladeMeldungen, 5 * 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { ladeMeldungen(); zeichneJetzt(); } });
