@@ -22,7 +22,7 @@ Oben in jeder Datei steht, wie sie aufgebaut ist.
 **So geht's auf dem iPhone (GitHub-App) oder am Rechner (github.com):**
 1. Repository `Wolfip1969/Volksfest-App` öffnen, dann den Ordner `inhalte` und die Datei, z. B. `programm.yml`.
 2. Auf den Stift tippen („Edit“) und den Text ändern.
-3. „Commit changes“ tippen. Nach etwa einer halben Minute ist die Änderung live.
+3. „Commit changes“ tippen. Meist ist die Änderung nach unter einer Minute live, manchmal dauert es bis zu drei Minuten.
 
 **Sicherheitsnetz:** Vor jeder Veröffentlichung werden die Dateien geprüft. Ist etwas falsch (z. B. Uhrzeit „18.00“ statt 18:00, ein Preis „sechs“, ein fehlender Titel oder eine verrutschte Einrückung), geht die Änderung nicht online, und die bisherige Version bleibt stehen. In GitHub erscheint am Commit dann ein rotes ✗. Ein Tipp darauf zeigt die Fehlermeldung mit Datei und Stelle.
 
